@@ -11,7 +11,7 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 
 OUTDIR=./clang/
 ERASE=rm
-OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)note.o $(OUTDIR)system.o
+OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o
 EXE=8BC
 
 # Targets ========================================
@@ -24,12 +24,6 @@ $(OUTDIR)main.o : main.cpp
 	
 $(OUTDIR)menu.o : Menu.cpp Menu.hpp
 	$(CC) $(CFLAGS) $(INC) -c Menu.cpp -o $(OUTDIR)menu.o
-	
-$(OUTDIR)note.o : Note.cpp Note.hpp
-	$(CC) $(CFLAGS) $(INC) -c Note.cpp -o $(OUTDIR)note.o
-	
-$(OUTDIR)system.o : System.cpp System.hpp
-	$(CC) $(CFLAGS) $(INC) -c System.cpp -o $(OUTDIR)system.o
 	
 clean :
 	$(ERASE) $(EXE) $(OBJECTS)
