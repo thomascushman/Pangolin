@@ -12,7 +12,7 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 OUTDIR=./clang/
 ERASE=rm
 OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o
-EXE=8BC
+EXE=Pangolin
 
 # Targets ========================================
 
