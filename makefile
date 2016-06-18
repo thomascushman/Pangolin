@@ -12,7 +12,7 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 OUTDIR=./clang/
 ERASE=rm
 OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)audiomanager.o
-EXE=Pangolin
+EXE=Pangolin.exe
 
 # Targets ========================================
 
