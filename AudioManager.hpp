@@ -5,8 +5,8 @@
 #include "portaudio.h"
 
 #define SAMPLE_RATE   (44100)
-#define FRAMES_PER_BUFFER  (300)
-#define TABLE_SIZE   (200)
+#define FRAMES_PER_BUFFER  (500)
+#define TABLE_SIZE   (2005)
 
 class AudioManager
 {

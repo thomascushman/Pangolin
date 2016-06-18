@@ -12,6 +12,7 @@ AudioManager::AudioManager()
   {
                 //amplitude * Math.Sin((2 * Math.PI * n * frequency) / sampleRate)
     sine[0][i] = (float) (0.4f * sin( 220.00f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+    sine[1][i] = (float) (0.4f * sin( 330.00f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
   }
 }
 
@@ -111,7 +112,7 @@ int AudioManager::paCallbackMethod(const void *inputBuffer,
 
   for(unsigned long i = 0; i < framesPerBuffer; i++)
   {
-    *out++ = sine[0][phase_];
+    *out++ = sine[0][phase_] + sine[1][phase_];
     if( ++phase_ >= TABLE_SIZE ) 
     {
       phase_ -= TABLE_SIZE;
