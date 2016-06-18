@@ -11,7 +11,7 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 
 OUTDIR=./clang/
 ERASE=rm
-OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o
+OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)audiomanager.o
 EXE=Pangolin
 
 # Targets ========================================
@@ -24,6 +24,9 @@ $(OUTDIR)main.o : main.cpp
 	
 $(OUTDIR)menu.o : Menu.cpp Menu.hpp
 	$(CC) $(CFLAGS) $(INC) -c Menu.cpp -o $(OUTDIR)menu.o
+	
+$(OUTDIR)audiomanager.o : AudioManager.cpp AudioManager.hpp
+	$(CC) $(CFLAGS) $(INC) -c AudioManager.cpp -o $(OUTDIR)audiomanager.o
 	
 clean :
 	$(ERASE) $(EXE) $(OBJECTS)
