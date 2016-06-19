@@ -11,7 +11,7 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 
 OUTDIR=./clang/
 ERASE=rm
-OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)audiomanager.o $(OUTDIR)note.o
+OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)oscillator.o $(OUTDIR)note.o
 EXE=Pangolin.exe
 
 # Targets ========================================
@@ -25,8 +25,8 @@ $(OUTDIR)main.o : main.cpp
 $(OUTDIR)menu.o : Menu.cpp Menu.hpp
 	$(CC) $(CFLAGS) $(INC) -c Menu.cpp -o $(OUTDIR)menu.o
 	
-$(OUTDIR)audiomanager.o : AudioManager.cpp AudioManager.hpp
-	$(CC) $(CFLAGS) $(INC) -c AudioManager.cpp -o $(OUTDIR)audiomanager.o
+$(OUTDIR)oscillator.o : Oscillator.cpp Oscillator.hpp
+	$(CC) $(CFLAGS) $(INC) -c Oscillator.cpp -o $(OUTDIR)oscillator.o
 	
 $(OUTDIR)note.o : Note.cpp Note.hpp
 	$(CC) $(CFLAGS) $(INC) -c Note.cpp -o $(OUTDIR)note.o

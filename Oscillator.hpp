@@ -1,5 +1,5 @@
-#ifndef AUDIOMANAGER_HPP
-#define AUDIOMANAGER_HPP
+#ifndef OSCILLATOR_HPP
+#define OSCILLATOR_HPP
 
 #include <stdio.h>
 #include "portaudio.h"
@@ -9,10 +9,10 @@
 #define FRAMES_PER_BUFFER  (500)
 #define TABLE_SIZE   (1600) //remember to update this define in Note.cpp if changed
 
-class AudioManager
+class Oscillator
 {
   public:
-    AudioManager();
+    Oscillator();
     bool open(PaDeviceIndex index);
     bool close();
     bool start();

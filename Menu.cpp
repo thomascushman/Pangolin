@@ -1,7 +1,7 @@
 #include "Menu.hpp"
-#include "AudioManager.hpp"
+#include "Oscillator.hpp"
 
-extern AudioManager manager;
+extern Oscillator manager;
 
 Menu::Menu()
 {

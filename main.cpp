@@ -1,8 +1,8 @@
 #include "Menu.hpp"
-#include "AudioManager.hpp"
+#include "Oscillator.hpp"
 #include <stdio.h>
 
-AudioManager manager;
+Oscillator manager;
 
 int main(void)
 {

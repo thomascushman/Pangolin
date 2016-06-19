@@ -1,10 +1,10 @@
-#include "AudioManager.hpp"
+#include "Oscillator.hpp"
 #include <math.h>
 #include <stdio.h>
 
 // PUBLIC METHODS
 
-AudioManager::AudioManager()
+Oscillator::Oscillator()
   : stream_(nullptr)
 {
   Pa_Initialize();
@@ -29,7 +29,7 @@ AudioManager::AudioManager()
 
 
 //opens the stream for output
-bool AudioManager::open(PaDeviceIndex index)
+bool Oscillator::open(PaDeviceIndex index)
 {
   PaStreamParameters outputParameters;
   outputParameters.device = index;
@@ -51,7 +51,7 @@ bool AudioManager::open(PaDeviceIndex index)
     SAMPLE_RATE,
     FRAMES_PER_BUFFER,
     paClipOff,      /* we won't output out of range samples so don't bother clipping them */
-    &AudioManager::paCallback,
+    &Oscillator::paCallback,
     this            /* Using 'this' for userData so we can cast to Sine* in paCallback method */
     );
 
@@ -61,7 +61,7 @@ bool AudioManager::open(PaDeviceIndex index)
     return false;
   }
 
-  err = Pa_SetStreamFinishedCallback( stream_, &AudioManager::paStreamFinished );
+  err = Pa_SetStreamFinishedCallback( stream_, &Oscillator::paStreamFinished );
 
   if (err != paNoError)
   {
@@ -75,7 +75,7 @@ bool AudioManager::open(PaDeviceIndex index)
 }
 
 //closes the output stream
-bool AudioManager::close()
+bool Oscillator::close()
 {
   if (stream_ == 0)
     return false;
@@ -86,7 +86,7 @@ bool AudioManager::close()
   return (err == paNoError);
 }
 
-bool AudioManager::start()
+bool Oscillator::start()
 {
   if (stream_ == 0)
     return false;
@@ -97,7 +97,7 @@ bool AudioManager::start()
 }
 
 //stops the output stream
-bool AudioManager::stop()
+bool Oscillator::stop()
 {
   if (stream_ == 0)
     return false;
@@ -110,7 +110,7 @@ bool AudioManager::stop()
 //PRIVATE METHODS
 
 /* The instance callback, where we have access to every method/variable in object of class Sine */
-int AudioManager::paCallbackMethod(const void *inputBuffer, 
+int Oscillator::paCallbackMethod(const void *inputBuffer, 
                      void *outputBuffer,
                      unsigned long framesPerBuffer,
                      const PaStreamCallbackTimeInfo* timeInfo,
@@ -139,7 +139,7 @@ int AudioManager::paCallbackMethod(const void *inputBuffer,
     ** It may called at interrupt level on some machines so don't do anything
     ** that could mess up the system like calling malloc() or free().
     */
-int AudioManager::paCallback(const void *inputBuffer, 
+int Oscillator::paCallback(const void *inputBuffer, 
                       void *outputBuffer,
                       unsigned long framesPerBuffer,
                       const PaStreamCallbackTimeInfo* timeInfo,
@@ -148,14 +148,14 @@ int AudioManager::paCallback(const void *inputBuffer,
 {
   /* Here we cast userData to Sine* type so we can call the instance method paCallbackMethod, we can do that since 
       we called Pa_OpenStream with 'this' for userData */
-  return ((AudioManager*)userData)->paCallbackMethod(inputBuffer, 
+  return ((Oscillator*)userData)->paCallbackMethod(inputBuffer, 
                                                      outputBuffer,
                                                      framesPerBuffer,
                                                      timeInfo,
                                                      statusFlags);
 }
 
-void AudioManager::paStreamFinishedMethod()
+void Oscillator::paStreamFinishedMethod()
 {
   printf("");
 }
@@ -163,7 +163,7 @@ void AudioManager::paStreamFinishedMethod()
 /*
   * This routine is called by portaudio when playback is done.
   */
-void AudioManager::paStreamFinished(void* userData)
+void Oscillator::paStreamFinished(void* userData)
 {
-  return ((AudioManager*)userData)->paStreamFinishedMethod();
+  return ((Oscillator*)userData)->paStreamFinishedMethod();
 }
