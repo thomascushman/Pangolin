@@ -3,10 +3,11 @@
 
 #include <stdio.h>
 #include "portaudio.h"
+#include "Note.hpp"
 
 #define SAMPLE_RATE   (44100)
 #define FRAMES_PER_BUFFER  (500)
-#define TABLE_SIZE   (2005)
+#define TABLE_SIZE   (1600) //remember to update this define in Note.cpp if changed
 
 class AudioManager
 {
@@ -19,8 +20,8 @@ class AudioManager
   
   private:
     PaStream *stream_;
-    int phase_;
-    float sine[32][TABLE_SIZE];
+    float sine[TABLE_SIZE];
+    Note notes[32];
     
     int paCallbackMethod(const void *inputBuffer, 
                      void *outputBuffer,

@@ -1,4 +1,7 @@
 #include "Menu.hpp"
+#include "AudioManager.hpp"
+
+extern AudioManager manager;
 
 Menu::Menu()
 {
@@ -78,12 +81,15 @@ bool Menu::Update()
     switch(choice_ - 1)
     {
       case PLAY:
+        manager.start();
         return 1;
         
       case STOP:
+        manager.stop();
         return 1;
         
       case EXIT:
+        manager.close();
         return 0;
       default:
         mvprintw(max_y_ - 1, 0, "You chose choice %d with choice string %s\n", choice_, choices_[choice_ - 1]);

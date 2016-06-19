@@ -1,20 +1,32 @@
 #include "AudioManager.hpp"
 #include <math.h>
+#include <stdio.h>
 
 // PUBLIC METHODS
 
 AudioManager::AudioManager()
-  : stream_(nullptr), phase_(0)
+  : stream_(nullptr)
 {
   Pa_Initialize();
   /* initialise sinusoidal wavetable */
   for( int i=0; i < TABLE_SIZE; i++ )
   {
                 //amplitude * Math.Sin((2 * Math.PI * n * frequency) / sampleRate)
-    sine[0][i] = (float) (0.4f * sin( 220.00f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
-    sine[1][i] = (float) (0.4f * sin( 330.00f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+    sine[i] = (float) (0.1f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+  }
+  
+  for(int i = 0; i < 32; ++i)
+  {
+    notes[i].init(sine);
+    notes[i].play(48 + i);
+  }
+  
+  for(int i = 0; i < 32; i += 2)
+  {
+    notes[i].stop();
   }
 }
+
 
 //opens the stream for output
 bool AudioManager::open(PaDeviceIndex index)
@@ -27,7 +39,7 @@ bool AudioManager::open(PaDeviceIndex index)
     return false;
   }
 
-  outputParameters.channelCount = 1;       /* stereo output */
+  outputParameters.channelCount = 1;       /* mono output */
   outputParameters.sampleFormat = paFloat32; /* 32 bit floating point output */
   outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
   outputParameters.hostApiSpecificStreamInfo = NULL;
@@ -112,11 +124,12 @@ int AudioManager::paCallbackMethod(const void *inputBuffer,
 
   for(unsigned long i = 0; i < framesPerBuffer; i++)
   {
-    *out++ = sine[0][phase_] + sine[1][phase_];
-    if( ++phase_ >= TABLE_SIZE ) 
+    (*out) = 0;
+    for(int i = 0; i < 32; ++i)
     {
-      phase_ -= TABLE_SIZE;
+      (*out) += notes[i].getSample();
     }
+    ++out;
   }
   
   return paContinue;
@@ -144,7 +157,7 @@ int AudioManager::paCallback(const void *inputBuffer,
 
 void AudioManager::paStreamFinishedMethod()
 {
-  printf("Stream Completed\n");
+  printf("");
 }
 
 /*
