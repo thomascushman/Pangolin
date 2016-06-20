@@ -1,7 +1,6 @@
 #ifndef OSCILLATOR_HPP
 #define OSCILLATOR_HPP
 
-#include <stdio.h>
 #include "portaudio.h"
 #include "Note.hpp"
 

@@ -80,9 +80,14 @@ bool Menu::Update()
   {
     switch(choice_ - 1)
     {
-      case PLAY:
-        for(int i = 0; i < 32; i += 2)
-          osc.PlayNote(48 + i);
+      case PLAY: 
+        osc.PlayNote(C[1]);
+        osc.PlayNote(C[2]);
+        osc.PlayNote(C[3]);
+        osc.PlayNote(C[4]);
+        osc.PlayNote(E[4]);
+        osc.PlayNote(G[4]);
+        osc.PlayNote(C[5]);
         return 1;
         
       case STOP:

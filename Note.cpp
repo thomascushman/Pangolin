@@ -1,6 +1,6 @@
 #include "Note.hpp"
 #include <math.h>
-#include <stdio.h>
+
 #define TABLE_SIZE (1600)
 
 Note::Note()

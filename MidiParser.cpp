@@ -2,7 +2,6 @@
 #include "Oscillator.hpp"
 #include "inc/MidiFile.h"
 #include "inc/MidiEventList.h"
-#include <math.h>
 
 extern Oscillator osc;
 
