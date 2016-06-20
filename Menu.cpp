@@ -1,7 +1,7 @@
 #include "Menu.hpp"
 #include "Oscillator.hpp"
 
-extern Oscillator manager;
+extern Oscillator osc;
 
 Menu::Menu()
 {
@@ -81,15 +81,15 @@ bool Menu::Update()
     switch(choice_ - 1)
     {
       case PLAY:
-        manager.start();
+        for(int i = 0; i < 32; i += 2)
+          osc.PlayNote(48 + i);
         return 1;
         
       case STOP:
-        manager.stop();
+        osc.StopAll();
         return 1;
         
       case EXIT:
-        manager.close();
         return 0;
       default:
         mvprintw(max_y_ - 1, 0, "You chose choice %d with choice string %s\n", choice_, choices_[choice_ - 1]);

@@ -5,10 +5,11 @@ class Note
 {
   public:
     Note();
-    void init(float *sine);
-    void play(int noteNum);
-    void stop();
-    float getSample();
+    void Init(float *sine);
+    void Play(int noteNum);
+    void Stop();
+    float GetSample();
+    bool IsPlaying();
     
   private:
     int noteNum_;

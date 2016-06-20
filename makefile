@@ -11,7 +11,7 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 
 OUTDIR=./clang/
 ERASE=rm
-OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)oscillator.o $(OUTDIR)note.o
+OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)oscillator.o $(OUTDIR)note.o $(OUTDIR)midiparser.o
 EXE=Pangolin.exe
 
 # Targets ========================================
@@ -30,6 +30,9 @@ $(OUTDIR)oscillator.o : Oscillator.cpp Oscillator.hpp
 	
 $(OUTDIR)note.o : Note.cpp Note.hpp
 	$(CC) $(CFLAGS) $(INC) -c Note.cpp -o $(OUTDIR)note.o
+	
+$(OUTDIR)midiparser.o : MidiParser.cpp MidiParser.hpp
+	$(CC) $(CFLAGS) $(INC) -c MidiParser.cpp -o $(OUTDIR)midiparser.o
 	
 clean :
 	$(ERASE) $(EXE) $(OBJECTS)

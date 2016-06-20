@@ -13,15 +13,19 @@ class Oscillator
 {
   public:
     Oscillator();
-    bool open(PaDeviceIndex index);
-    bool close();
-    bool start();
-    bool stop();
+    ~Oscillator();
+    void PlayNote(int noteNum);
+    void StopAll();
   
   private:
     PaStream *stream_;
-    float sine[TABLE_SIZE];
-    Note notes[32];
+    float sine_[TABLE_SIZE];
+    Note notes_[32];
+    
+    bool Open(PaDeviceIndex index);
+    bool Close();
+    bool Start();
+    bool Stop();
     
     int paCallbackMethod(const void *inputBuffer, 
                      void *outputBuffer,

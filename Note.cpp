@@ -9,24 +9,24 @@ Note::Note()
   //this constructor intentionally left blank
 }
 
-void Note::init(float *sine)
+void Note::Init(float *sine)
 {
   sine_ = sine;
 }
 
-void Note::play(int noteNum)
+void Note::Play(int noteNum)
 {
   noteNum_ = noteNum;
   samplingIncrement_ = powf(2, (noteNum_ - 21) / 12.0f);
   active_ = true;
 }
 
-void Note::stop()
+void Note::Stop()
 {
   active_ = false;
 }
 
-float Note::getSample()
+float Note::GetSample()
 {
   if(active_)
   {
@@ -38,4 +38,9 @@ float Note::getSample()
     return sine_[(int)phase_];
   }
   else return 0;
+}
+
+bool Note::IsPlaying()
+{
+  return active_;
 }

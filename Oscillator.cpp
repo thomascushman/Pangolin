@@ -12,24 +12,47 @@ Oscillator::Oscillator()
   for( int i=0; i < TABLE_SIZE; i++ )
   {
                 //amplitude * Math.Sin((2 * Math.PI * n * frequency) / sampleRate)
-    sine[i] = (float) (0.1f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+    sine_[i] = (float) (0.1f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
   }
   
   for(int i = 0; i < 32; ++i)
   {
-    notes[i].init(sine);
-    notes[i].play(48 + i);
+    notes_[i].Init(sine_);
   }
+  Open(Pa_GetDefaultOutputDevice());
   
-  for(int i = 0; i < 32; i += 2)
+  Start();
+}
+
+Oscillator::~Oscillator()
+{
+  Close();
+}
+
+void Oscillator::PlayNote(int noteNum)
+{
+  for(int i = 0; i < 32; ++i)
   {
-    notes[i].stop();
+    if(!notes_[i].IsPlaying())
+    {
+      notes_[i].Play(noteNum);
+      break;
+    }
   }
 }
 
+void Oscillator::StopAll()
+{
+  for(int i = 0; i < 32; ++i)
+  {
+    notes_[i].Stop();
+  }
+}
+
+//PRIVATE METHODS
 
 //opens the stream for output
-bool Oscillator::open(PaDeviceIndex index)
+bool Oscillator::Open(PaDeviceIndex index)
 {
   PaStreamParameters outputParameters;
   outputParameters.device = index;
@@ -75,7 +98,7 @@ bool Oscillator::open(PaDeviceIndex index)
 }
 
 //closes the output stream
-bool Oscillator::close()
+bool Oscillator::Close()
 {
   if (stream_ == 0)
     return false;
@@ -86,7 +109,7 @@ bool Oscillator::close()
   return (err == paNoError);
 }
 
-bool Oscillator::start()
+bool Oscillator::Start()
 {
   if (stream_ == 0)
     return false;
@@ -97,7 +120,7 @@ bool Oscillator::start()
 }
 
 //stops the output stream
-bool Oscillator::stop()
+bool Oscillator::Stop()
 {
   if (stream_ == 0)
     return false;
@@ -107,7 +130,6 @@ bool Oscillator::stop()
   return (err == paNoError);
 }
 
-//PRIVATE METHODS
 
 /* The instance callback, where we have access to every method/variable in object of class Sine */
 int Oscillator::paCallbackMethod(const void *inputBuffer, 
@@ -127,7 +149,7 @@ int Oscillator::paCallbackMethod(const void *inputBuffer,
     (*out) = 0;
     for(int i = 0; i < 32; ++i)
     {
-      (*out) += notes[i].getSample();
+      (*out) += notes_[i].GetSample();
     }
     ++out;
   }
