@@ -12,13 +12,12 @@ class MidiParser
     ~MidiParser();
     bool OpenFile(const char* file);
     void Play(void);
-    void Update(void);
+    bool Update(void);
     bool HasFile(void);
     bool IsPlaying(void);
     
   private:
     MidiFile *midiFile_;
-    MidiEventList *eventList_;
     int currentEventIndex_;
     bool hasFile_;
     bool isPlaying_;

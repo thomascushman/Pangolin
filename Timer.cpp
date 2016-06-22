@@ -17,7 +17,6 @@ bool Timer::IsItThatTime(double time)
     currentTime_ = std::clock();
     if(fabs(time - ( (currentTime_ - startTime_) / (double) CLOCKS_PER_SEC)) <= EPSILON)
     {
-      printf("HERE\n");
       return true;
     }
   }

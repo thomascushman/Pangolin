@@ -32,6 +32,11 @@ Oscillator::~Oscillator()
 
 void Oscillator::PlayNote(int noteNum)
 {
+  if(noteNum < 21 || noteNum > 108)
+  {
+    return;
+  }
+  
   for(int i = 0; i < 32; ++i)
   {
     if(!notes_[i].IsPlaying())
