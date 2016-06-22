@@ -26,6 +26,7 @@ Oscillator::Oscillator()
 
 Oscillator::~Oscillator()
 {
+  Stop();
   Close();
 }
 

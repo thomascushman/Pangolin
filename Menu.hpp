@@ -4,13 +4,15 @@
 #include <stdio.h>
 #include <ncurses.h>
 
+class Oscillator;
+
 class Menu
 {
   public:
     Menu();
     ~Menu();
     void Print_Menu() const;
-    bool Update();
+    bool Update(Oscillator& osc);
     
   private:
     enum CHOICES

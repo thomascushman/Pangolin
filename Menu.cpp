@@ -1,8 +1,6 @@
 #include "Menu.hpp"
 #include "Oscillator.hpp"
 
-extern Oscillator osc;
-
 Menu::Menu()
 {
   initscr();   // startup ncurses
@@ -51,7 +49,7 @@ void Menu::Print_Menu() const
   wrefresh(window_);
 }
 
-bool Menu::Update()
+bool Menu::Update(Oscillator& osc)
 {
   int inputChar = wgetch(window_);
   switch(inputChar)
