@@ -1,6 +1,8 @@
 #ifndef NOTE_HPP
 #define NOTE_HPP
 
+#include "Timer.hpp"
+
 static const int C[9]       = { 12, 24, 36, 48, 60, 72, 84, 96,  108 };
 static const int C_Sharp[9] = { 13, 25, 37, 49, 61, 73, 85, 97,  109 };
 static const int D[9]       = { 14, 26, 38, 50, 62, 74, 86, 98,  110 };
@@ -21,6 +23,7 @@ class Note
     Note();
     void Init(float *sine);
     void Play(int noteNum);
+    void Update();
     void Stop();
     float GetSample();
     bool IsPlaying();
@@ -31,6 +34,7 @@ class Note
     float phase_;
     float samplingIncrement_;
     float *sine_;
+    Timer timer;
 };
 
 #endif

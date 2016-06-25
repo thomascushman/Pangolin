@@ -155,6 +155,7 @@ int Oscillator::paCallbackMethod(const void *inputBuffer,
     (*out) = 0;
     for(int i = 0; i < 32; ++i)
     {
+      notes_[i].Update();
       (*out) += notes_[i].GetSample();
     }
     ++out;

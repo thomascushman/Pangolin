@@ -1,31 +1,34 @@
 #include "Timer.hpp"
 #include <math.h>
 #include <stdio.h>
+#include <iostream>
 
-#define EPSILON 0.0001
+using namespace std::chrono;
 
-Timer::Timer()
-  : startTime_(std::clock()), currentTime_(startTime_), active_(false)
+void Timer::Start(long duration)
 {
-  
+  active_ = true;
+  currentTime_ = startTime_ = high_resolution_clock::now();
+  durationInMicro_ = duration;
 }
 
-bool Timer::IsItThatTime(double time)
+bool Timer::Update()
 {
   if(active_)
   {
-    currentTime_ = std::clock();
-    if(fabs(time - ( (currentTime_ - startTime_) / (double) CLOCKS_PER_SEC)) <= EPSILON)
+    //update clock
+    currentTime_ = high_resolution_clock::now();
+    if(duration_cast<microseconds>(currentTime_ - startTime_).count() >= durationInMicro_)
     {
-      return true;
+      active_ = false;
     }
   }
-  return false;
+  return active_;
 }
 
-void Timer::Start()
+void Timer::debug()
 {
-  active_ = true;
+  printf("%ld\n", duration_cast<microseconds>(currentTime_ - startTime_).count());
 }
 
 bool Timer::IsActive()

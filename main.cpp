@@ -1,4 +1,4 @@
-#include "Menu.hpp"
+//#include "Menu.hpp"
 #include "Oscillator.hpp"
 #include "MidiParser.hpp"
 #include "Timer.hpp"
@@ -6,17 +6,17 @@
 
 MidiParser parser;
 Oscillator osc;
-Menu menu;
-Timer timer;
+//Menu menu;
 
 int main(void)
 {
+  //osc.PlayNote(C[4]);
   if(parser.OpenFile("Dark Souls - Great Grey Wolf Sif.mid"))
   {
     parser.Play();
-    while(parser.Update());
+    while(parser.Update(osc));
   }
-
-  while(menu.Update(osc));
+  //getchar();
+  //while(menu.Update(osc));
   return 0;
 }

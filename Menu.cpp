@@ -94,6 +94,7 @@ bool Menu::Update(Oscillator& osc)
         
       case EXIT:
         return 0;
+        
       default:
         mvprintw(max_y_ - 1, 0, "You chose choice %d with choice string %s\n", choice_, choices_[choice_ - 1]);
         return 0;

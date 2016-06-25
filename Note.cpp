@@ -19,6 +19,18 @@ void Note::Play(int noteNum)
   noteNum_ = noteNum;
   samplingIncrement_ = powf(2, (noteNum_ - 21) / 12.0f);
   active_ = true;
+  timer.Start(100000);
+}
+
+void Note::Update()
+{
+  if(active_)
+  {
+    if(!timer.Update())
+    {
+      Stop();
+    }
+  }
 }
 
 void Note::Stop()

@@ -3,11 +3,9 @@
 #include "inc/MidiFile.h"
 #include "inc/MidiEventList.h"
 
-extern Oscillator osc;
-
 //allocates memory for the midiFile
 MidiParser::MidiParser()
-  : currentEventIndex_(0), hasFile_(false)
+  : /*currentEventIndex_(0),*/ hasFile_(false)
 {
   midiFile_ = new MidiFile();
 }
@@ -35,7 +33,7 @@ bool MidiParser::OpenFile(const char *file)
     {
       if(midiFile_->getEvent(0, i).isTempo() && microSecondsPerTick_ == -1)
       {
-        microSecondsPerTick_ = 1 + (60000 / (midiFile_->getEvent(0, i).getTempoBPM() * pulsesPerQuarter_));
+        microSecondsPerTick_ = static_cast<long>(((60000 / (midiFile_->getEvent(0, i).getTempoBPM() * pulsesPerQuarter_))) * 1000);
         break;
       }
     }
@@ -46,31 +44,40 @@ bool MidiParser::OpenFile(const char *file)
 void MidiParser::Play(void)
 {
   isPlaying_ = true;
+  timer.Start(microSecondsPerTick_);
 }
 
-bool MidiParser::Update(void)
+bool MidiParser::Update(Oscillator &osc)
 {
-  if(hasFile_ && isPlaying_)
+  if(timer.IsActive())
   {
-    ++absoluteTicks_;
-    if(absoluteTicks_ >= midiFile_->getTotalTimeInTicks())
+    timer.Update();
+  }
+  else
+  {
+    timer.Start(microSecondsPerTick_);
+    if(hasFile_ && isPlaying_)
     {
-      isPlaying_ = false;
-      return false;
-    }
-    for(int i = 0; i < midiFile_->getEventCount(1); ++i)
-    {
-      if(midiFile_->getEvent(1, i).tick == absoluteTicks_)
+      ++absoluteTicks_;
+      if(absoluteTicks_ >= midiFile_->getTotalTimeInTicks())
       {
-        if(midiFile_->getEvent(1, i).isNoteOn())
+        isPlaying_ = false;
+      }
+      for(int i = 0; i < midiFile_->getEventCount(1); ++i)
+      {
+        if(midiFile_->getEvent(1, i).tick == absoluteTicks_)
         {
-          osc.StopAll();
-          osc.PlayNote(midiFile_->getEvent(1, currentEventIndex_++).getKeyNumber());
+          if(midiFile_->getEvent(1, i).isNoteOn())
+          {
+            printf("%d\n", midiFile_->getEvent(1, i).getKeyNumber());
+            osc.PlayNote(midiFile_->getEvent(1, i).getKeyNumber());
+          }
         }
       }
     }
   }
-  return true;
+    
+  return isPlaying_;
 }
 
 bool MidiParser::HasFile(void)
