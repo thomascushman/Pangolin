@@ -20,6 +20,7 @@ class MidiParser
     bool IsPlaying(void);
     
   private:
+    void ChangeTempo(double bpm);
     MidiFile *midiFile_;
     bool hasFile_;
     bool isPlaying_;

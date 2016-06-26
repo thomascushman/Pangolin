@@ -16,10 +16,10 @@ Oscillator::Oscillator()
     square_[i] = 0.02f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
     triangle_[i] = 0.7f * ((float)i/(float)SAMPLE_RATE);
   }
-  waveform_ = sine_;
-  for(int i = 0; i < 32; ++i)
+  waveform_ = triangle_;
+  for(int i = 0; i < NUM_CHANNELS; ++i)
   {
-    notes_[i].Init(waveform_);
+    channels_[i].Init(waveform_);
   }
   Open(Pa_GetDefaultOutputDevice());
   
@@ -39,11 +39,11 @@ void Oscillator::PlayNote(int noteNum)
     return;
   }
   
-  for(int i = 0; i < 32; ++i)
+  for(int i = 0; i < NUM_CHANNELS; ++i)
   {
-    if(!notes_[i].IsPlaying())
+    if(!channels_[i].IsPlaying())
     {
-      notes_[i].Play(noteNum);
+      channels_[i].Play(noteNum);
       break;
     }
   }
@@ -51,11 +51,11 @@ void Oscillator::PlayNote(int noteNum)
 
 void Oscillator::StopNote(int noteNum)
 {
-  for(int i = 0; i < 32; ++i)
+  for(int i = 0; i < NUM_CHANNELS; ++i)
   {
-    if(notes_[i].IsPlaying() && notes_[i].IsNote(noteNum))
+    if(channels_[i].IsPlaying() && channels_[i].IsNote(noteNum))
     {
-      notes_[i].Stop();
+      channels_[i].Stop();
       break;
     }
   }
@@ -63,9 +63,9 @@ void Oscillator::StopNote(int noteNum)
 
 void Oscillator::StopAll()
 {
-  for(int i = 0; i < 32; ++i)
+  for(int i = 0; i < NUM_CHANNELS; ++i)
   {
-    notes_[i].Stop();
+    channels_[i].Stop();
   }
 }
 
@@ -167,9 +167,9 @@ int Oscillator::paCallbackMethod(const void *inputBuffer,
   for(unsigned long i = 0; i < framesPerBuffer; i++)
   {
     (*out) = 0;
-    for(int i = 0; i < 32; ++i)
+    for(int i = 0; i < NUM_CHANNELS; ++i)
     {
-      (*out) += notes_[i].GetSample();
+      (*out) += channels_[i].GetSample();
     }
     ++out;
   }

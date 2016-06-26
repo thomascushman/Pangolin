@@ -4,6 +4,7 @@
 #include "portaudio.h"
 #include "Note.hpp"
 
+#define NUM_CHANNELS 16
 #define SAMPLE_RATE   (44100)
 #define FRAMES_PER_BUFFER  (500)
 #define TABLE_SIZE   (1600) //remember to update this define in Note.cpp if changed
@@ -20,7 +21,7 @@ class Oscillator
   private:
     PaStream *stream_;
     float *waveform_;
-    Note notes_[32];
+    Note channels_[16];
     
     //waveforms
     float sine_[TABLE_SIZE];

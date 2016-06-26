@@ -31,7 +31,7 @@ bool MidiParser::OpenFile(const char *file)
     {
       if(midiFile_->getEvent(0, i).isTempo() && microSecondsPerTick_ == -1)
       {
-        microSecondsPerTick_ = static_cast<long>(((60000 / (midiFile_->getEvent(0, i).getTempoBPM() * pulsesPerQuarter_))) * 1000);
+        ChangeTempo(midiFile_->getEvent(0, i).getTempoBPM());
         break;
       }
     }
@@ -74,6 +74,10 @@ bool MidiParser::Update(Oscillator &osc)
           {
             osc.StopNote(currentEvent.getKeyNumber());
           }
+          else if(currentEvent.isTempo())
+          {
+            ChangeTempo(currentEvent.getTempoBPM());
+          }
         }
       }
     }
@@ -92,3 +96,7 @@ bool MidiParser::IsPlaying(void)
   return isPlaying_;
 }
 
+void MidiParser::ChangeTempo(double bpm)
+{
+  microSecondsPerTick_ = static_cast<long>(((60000 / (bpm * pulsesPerQuarter_))) * 1000);
+}
