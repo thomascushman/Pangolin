@@ -14,9 +14,10 @@ void Note::Init(float *waveform)
   waveform_ = waveform;
 }
 
-void Note::Play(int noteNum)
+void Note::Play(int noteNum, int channel)
 {
   noteNum_ = noteNum;
+  channel_ = channel;
   samplingIncrement_ = powf(2, (noteNum_ - 21) / 12.0f);
   active_ = true;
 }
@@ -38,7 +39,7 @@ float Note::GetSample()
     }
     sample = waveform_[(int)phase_];
   }
-  else if(waveform_[(int)phase_] != 0)
+  else if(waveform_[(int)phase_] <= TABLE_SIZE)
   {
     phase_ += samplingIncrement_;
     if(phase_ >= TABLE_SIZE)

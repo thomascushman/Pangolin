@@ -16,7 +16,7 @@ Oscillator::Oscillator()
     square_[i] = 0.02f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
     triangle_[i] = 0.7f * ((float)i/(float)SAMPLE_RATE);
   }
-  waveform_ = triangle_;
+  waveform_ = sine_;
   for(int i = 0; i < NUM_CHANNELS; ++i)
   {
     channels_[i].Init(waveform_);
@@ -32,7 +32,7 @@ Oscillator::~Oscillator()
   Close();
 }
 
-void Oscillator::PlayNote(int noteNum)
+void Oscillator::PlayNote(int noteNum, int channel)
 {
   if(noteNum < 21 || noteNum > 108)
   {
@@ -43,8 +43,13 @@ void Oscillator::PlayNote(int noteNum)
   {
     if(!channels_[i].IsPlaying())
     {
-      channels_[i].Play(noteNum);
+      channels_[i].Play(noteNum, channel);
       break;
+    }
+    //for recording incident of errors. (shouldn't ever be triggered)
+    if(i == NUM_CHANNELS - 1)
+    {
+      printf("OUT OF CHANNELS\n");
     }
   }
 }

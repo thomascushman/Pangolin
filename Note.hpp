@@ -22,7 +22,7 @@ class Note
   public:
     Note();
     void Init(float *waveform);
-    void Play(int noteNum);
+    void Play(int noteNum, int channel);
     void Stop();
     float GetSample();
     bool IsPlaying();
@@ -30,6 +30,7 @@ class Note
     
   private:
     int noteNum_;
+    int channel_;
     bool active_;
     float phase_;
     float samplingIncrement_;

@@ -68,7 +68,9 @@ bool MidiParser::Update(Oscillator &osc)
         {
           if(currentEvent.isNoteOn())
           {
-            osc.PlayNote(currentEvent.getKeyNumber());
+            static int i = 1;
+            printf("NOTE ON, CHANNEL: %d %d\n", currentEvent.getChannelNibble(), i++);
+            osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble());
           }
           else if(currentEvent.isNoteOff())
           {
@@ -76,6 +78,8 @@ bool MidiParser::Update(Oscillator &osc)
           }
           else if(currentEvent.isTempo())
           {
+            static int i = 1;
+            printf("CHANGE TEMPO: %f %d\n", currentEvent.getTempoBPM(), i++);
             ChangeTempo(currentEvent.getTempoBPM());
           }
         }
