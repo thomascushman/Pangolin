@@ -5,7 +5,7 @@
 
 //allocates memory for the midiFile
 MidiParser::MidiParser()
-  : /*currentEventIndex_(0),*/ hasFile_(false)
+  : hasFile_(false)
 {
   midiFile_ = new MidiFile();
 }
@@ -19,14 +19,12 @@ MidiParser::~MidiParser()
 //returns true or false based on whether it could be opened
 bool MidiParser::OpenFile(const char *file)
 {
-  bool isRead = midiFile_->read(file) ? true : false;
-  if(isRead)
+  hasFile_ = midiFile_->read(file) ? true : false;
+  if(hasFile_)
   {
-    midiFile_->linkNotePairs();
-    midiFile_->doTimeAnalysis();
+    midiFile_->joinTracks();
     midiFile_->absoluteTicks();
     pulsesPerQuarter_ = midiFile_->getTicksPerQuarterNote();
-    hasFile_ = true;
 
     //get starting tempo
     for(int i = 0; i < midiFile_->getEventCount(0); ++i)
@@ -38,7 +36,7 @@ bool MidiParser::OpenFile(const char *file)
       }
     }
   }
-  return isRead;
+  return hasFile_;
 }
 
 void MidiParser::Play(void)
@@ -63,14 +61,18 @@ bool MidiParser::Update(Oscillator &osc)
       {
         isPlaying_ = false;
       }
-      for(int i = 0; i < midiFile_->getEventCount(1); ++i)
+      for(int i = 0; i < midiFile_->getEventCount(0); ++i)
       {
-        if(midiFile_->getEvent(1, i).tick == absoluteTicks_)
+        MidiEvent currentEvent = midiFile_->getEvent(0, i);
+        if(currentEvent.tick == absoluteTicks_)
         {
-          if(midiFile_->getEvent(1, i).isNoteOn())
+          if(currentEvent.isNoteOn())
           {
-            printf("%d\n", midiFile_->getEvent(1, i).getKeyNumber());
-            osc.PlayNote(midiFile_->getEvent(1, i).getKeyNumber());
+            osc.PlayNote(currentEvent.getKeyNumber());
+          }
+          else if(currentEvent.isNoteOff())
+          {
+            osc.StopNote(currentEvent.getKeyNumber());
           }
         }
       }

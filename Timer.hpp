@@ -6,7 +6,7 @@
 class Timer
 {
   public:
-    void Start(long duration);
+    void Start(long durationInMicro);
     bool Update();
     bool IsActive();
     void debug();

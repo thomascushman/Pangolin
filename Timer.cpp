@@ -5,11 +5,11 @@
 
 using namespace std::chrono;
 
-void Timer::Start(long duration)
+void Timer::Start(long durationInMicro)
 {
   active_ = true;
   currentTime_ = startTime_ = high_resolution_clock::now();
-  durationInMicro_ = duration;
+  durationInMicro_ = durationInMicro;
 }
 
 bool Timer::Update()

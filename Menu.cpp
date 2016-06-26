@@ -79,13 +79,7 @@ bool Menu::Update(Oscillator& osc)
     switch(choice_ - 1)
     {
       case PLAY: 
-        osc.PlayNote(C[1]);
-        osc.PlayNote(C[2]);
-        osc.PlayNote(C[3]);
-        osc.PlayNote(C[4]);
-        osc.PlayNote(E[4]);
-        osc.PlayNote(G[4]);
-        osc.PlayNote(C[5]);
+        
         return 1;
         
       case STOP:

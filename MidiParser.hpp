@@ -21,7 +21,6 @@ class MidiParser
     
   private:
     MidiFile *midiFile_;
-    //int currentEventIndex_;
     bool hasFile_;
     bool isPlaying_;
     int pulsesPerQuarter_;

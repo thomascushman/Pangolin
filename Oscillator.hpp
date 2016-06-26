@@ -14,12 +14,18 @@ class Oscillator
     Oscillator();
     ~Oscillator();
     void PlayNote(int noteNum);
+    void StopNote(int noteNum);
     void StopAll();
   
   private:
     PaStream *stream_;
-    float sine_[TABLE_SIZE];
+    float *waveform_;
     Note notes_[32];
+    
+    //waveforms
+    float sine_[TABLE_SIZE];
+    float square_[TABLE_SIZE];
+    float triangle_[TABLE_SIZE];
     
     bool Open(PaDeviceIndex index);
     bool Close();

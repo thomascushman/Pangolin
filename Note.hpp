@@ -21,20 +21,19 @@ class Note
 {
   public:
     Note();
-    void Init(float *sine);
+    void Init(float *waveform);
     void Play(int noteNum);
-    void Update();
     void Stop();
     float GetSample();
     bool IsPlaying();
+    bool IsNote(int noteNum);
     
   private:
     int noteNum_;
     bool active_;
     float phase_;
     float samplingIncrement_;
-    float *sine_;
-    Timer timer;
+    float *waveform_;
 };
 
 #endif

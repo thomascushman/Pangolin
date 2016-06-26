@@ -4,14 +4,14 @@
 #define TABLE_SIZE (1600)
 
 Note::Note()
-  : noteNum_(69), active_(false), phase_(0), sine_(0)
+  : noteNum_(69), active_(false), phase_(0), waveform_(0)
 {
   //this constructor intentionally left blank
 }
 
-void Note::Init(float *sine)
+void Note::Init(float *waveform)
 {
-  sine_ = sine;
+  waveform_ = waveform;
 }
 
 void Note::Play(int noteNum)
@@ -19,18 +19,6 @@ void Note::Play(int noteNum)
   noteNum_ = noteNum;
   samplingIncrement_ = powf(2, (noteNum_ - 21) / 12.0f);
   active_ = true;
-  timer.Start(100000);
-}
-
-void Note::Update()
-{
-  if(active_)
-  {
-    if(!timer.Update())
-    {
-      Stop();
-    }
-  }
 }
 
 void Note::Stop()
@@ -40,6 +28,7 @@ void Note::Stop()
 
 float Note::GetSample()
 {
+  float sample = 0;
   if(active_)
   {
     phase_ += samplingIncrement_;
@@ -47,12 +36,27 @@ float Note::GetSample()
     {
       phase_ -= TABLE_SIZE;
     }
-    return sine_[(int)phase_];
+    sample = waveform_[(int)phase_];
   }
-  else return 0;
+  else if(waveform_[(int)phase_] != 0)
+  {
+    phase_ += samplingIncrement_;
+    if(phase_ >= TABLE_SIZE)
+    {
+      phase_ -= TABLE_SIZE;
+    }
+    sample = waveform_[(int)phase_] / 2;
+  }
+  
+  return sample;
 }
 
 bool Note::IsPlaying()
 {
   return active_;
+}
+
+bool Note::IsNote(int noteNum)
+{
+  return noteNum_ == noteNum;
 }

@@ -11,13 +11,15 @@ Oscillator::Oscillator()
   /* initialise sinusoidal wavetable */
   for( int i=0; i < TABLE_SIZE; i++ )
   {
-                //amplitude * Math.Sin((2 * Math.PI * n * frequency) / sampleRate)
-    sine_[i] = (float) (0.1f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+                   //amplitude * Sin((2 * Math.PI * n * frequency) / sampleRate)
+    sine_[i] = (float) (0.025f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+    square_[i] = 0.02f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
+    triangle_[i] = 0.7f * ((float)i/(float)SAMPLE_RATE);
   }
-  
+  waveform_ = sine_;
   for(int i = 0; i < 32; ++i)
   {
-    notes_[i].Init(sine_);
+    notes_[i].Init(waveform_);
   }
   Open(Pa_GetDefaultOutputDevice());
   
@@ -42,6 +44,18 @@ void Oscillator::PlayNote(int noteNum)
     if(!notes_[i].IsPlaying())
     {
       notes_[i].Play(noteNum);
+      break;
+    }
+  }
+}
+
+void Oscillator::StopNote(int noteNum)
+{
+  for(int i = 0; i < 32; ++i)
+  {
+    if(notes_[i].IsPlaying() && notes_[i].IsNote(noteNum))
+    {
+      notes_[i].Stop();
       break;
     }
   }
@@ -155,7 +169,6 @@ int Oscillator::paCallbackMethod(const void *inputBuffer,
     (*out) = 0;
     for(int i = 0; i < 32; ++i)
     {
-      notes_[i].Update();
       (*out) += notes_[i].GetSample();
     }
     ++out;
