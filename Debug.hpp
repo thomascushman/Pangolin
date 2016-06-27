@@ -2,6 +2,7 @@
 #define DEBUG_HPP
 
 #include <stdio.h>
+#include "MidiEvent.h"
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
@@ -22,5 +23,20 @@
     printf("%swhite\n", KWHT);
     printf("%snormal\n", KNRM);
 */
+
+class MidiEvent;
+
+namespace Debug
+{
+  enum MESSAGE_TYPE
+  {
+    NOTE_ON,
+    NOTE_OFF,
+    VOLUME_CHANGE,
+    TEMPO_CHANGE,
+  };
+  
+  void Print_Stats(MESSAGE_TYPE type, MidiEvent& currentEvent);
+}
 
 #endif

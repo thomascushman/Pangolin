@@ -20,7 +20,7 @@ char const *filename[8] = {
 
 int main(void)
 {
-  if(parser.OpenFile(filename[3]))
+  if(parser.OpenFile(filename[6]))
   {
     parser.Play();
     while(parser.Update(osc));

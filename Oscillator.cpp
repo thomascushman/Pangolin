@@ -11,7 +11,7 @@ Oscillator::Oscillator()
   for( int i=0; i < TABLE_SIZE; i++ )
   {
                    //amplitude * Sin((2 * Math.PI * n * frequency) / sampleRate)
-    sine_[i] = (float) (0.00075f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+    sine_[i] = (float) (0.001f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
     square_[i] = 0.0002f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
     saw_[i] = 0.007f * ((float)i/(float)SAMPLE_RATE);
   }
