@@ -8,9 +8,10 @@ MidiParser parser;
 Oscillator osc;
 //Menu menu;
 
-char const *filename[7] = { 
+char const *filename[50] = { 
                             "Dark Sun Gwyndolin.mid",
                             "Moonlight_Butterfly_Dark_Sun_Gwyndolin_(Dark_Souls).mid",
+                            "smw2_title.mid",
                             "Dark Souls - Great Grey Wolf Sif.mid",
                             "Gwyn_Lord_of_Cinder_Dark_Souls.mid",
                             "legendary-hero.mid",
@@ -20,12 +21,12 @@ char const *filename[7] = {
 
 int main(void)
 {
-  if(parser.OpenFile(filename[5]))
+  if(parser.OpenFile(filename[6]))
   {
     parser.Play();
     while(parser.Update(osc));
   }
-  //getchar();
+
   //while(menu.Update(osc));
   return 0;
 }

@@ -39,14 +39,18 @@ float Note::GetSample()
     }
     sample = waveform_[(int)phase_];
   }
-  else if(waveform_[(int)phase_] <= TABLE_SIZE)
+  else if((int)phase_ <= TABLE_SIZE)
   {
     phase_ += samplingIncrement_;
     if(phase_ >= TABLE_SIZE)
     {
       phase_ -= TABLE_SIZE;
     }
-    sample = waveform_[(int)phase_] / 2;
+    sample = waveform_[(int)phase_];
+  }
+  else if(phase_ != 0)
+  {
+    phase_ = 0;
   }
   
   return sample * velocity_;

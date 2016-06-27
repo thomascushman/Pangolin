@@ -37,6 +37,10 @@ void Channel::PlayNote(int noteNum, int velocity)
       slots_[i].Play(noteNum, velocity);
       break;
     }
+    else if(slots_[i].IsNote(noteNum))
+    {
+      return;
+    }
     //for recording incident of errors. (shouldn't ever be triggered)
     if(i == NUM_SLOTS - 1)
     {

@@ -70,13 +70,13 @@ bool MidiParser::Update(Oscillator &osc)
           if(currentEvent.isNoteOn())
           {
             static int i = 1;
-            printf("%sNOTE ON: %sCHANNEL: %s%2d, %sVELOCITY: %s%3d, %sTIMES CALLED: %s%3d\n", KNRM, KRED, KNRM, currentEvent.getChannelNibble(), KGRN, KNRM, currentEvent[2], KBLU, KNRM, i++);
+            printf(" %sNOTE ON: %sCHANNEL: %s%2d, %sTIMES CALLED: %s%3d, %sVELOCITY: %s%3d\n", KNRM, KRED, KNRM, currentEvent.getChannelNibble(), KBLU, KNRM, i++, KGRN, KNRM, currentEvent[2]);
             osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble(), currentEvent[2]);
           }
           else if(currentEvent.isNoteOff())
           {
-            //static int i = 1;
-            //printf("NOTE OFF, CHANNEL: %d %d\n", currentEvent.getChannelNibble(), i++);
+            static int i = 1;
+            printf("%sNOTE OFF: %sCHANNEL: %s%2d, %sTIMES CALLED: %s%3d\n", KNRM, KRED, KNRM, currentEvent.getChannelNibble(), KBLU, KNRM, i++);
             osc.StopNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble());
           }
           else if(currentEvent.isTempo())
