@@ -1,6 +1,5 @@
 #include "Timer.hpp"
 #include <math.h>
-#include <stdio.h>
 #include <iostream>
 
 using namespace std::chrono;
@@ -24,11 +23,6 @@ bool Timer::Update()
     }
   }
   return active_;
-}
-
-void Timer::debug()
-{
-  printf("%ld\n", duration_cast<microseconds>(currentTime_ - startTime_).count());
 }
 
 bool Timer::IsActive()

@@ -9,7 +9,6 @@ class Timer
     void Start(long durationInMicro);
     bool Update();
     bool IsActive();
-    void debug();
     
   private:
     std::chrono::time_point<std::chrono::high_resolution_clock> startTime_ = std::chrono::high_resolution_clock::now();

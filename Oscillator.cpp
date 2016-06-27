@@ -1,6 +1,5 @@
 #include "Oscillator.hpp"
 #include <math.h>
-#include <stdio.h>
 
 // PUBLIC METHODS
 
@@ -182,7 +181,7 @@ int Oscillator::paCallback(const void *inputBuffer,
 
 void Oscillator::paStreamFinishedMethod()
 {
-  printf("");
+  //output for finished stream potentially goes here
 }
 
 /*

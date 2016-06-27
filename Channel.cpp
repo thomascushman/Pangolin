@@ -1,5 +1,5 @@
 #include "Channel.hpp"
-#include <stdio.h>
+#include "Debug.hpp"
 
 Channel::Channel()
   : volume_(1.0f), active_(false)

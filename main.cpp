@@ -2,13 +2,12 @@
 #include "Oscillator.hpp"
 #include "MidiParser.hpp"
 #include "Timer.hpp"
-#include <stdio.h>
 
 MidiParser parser;
 Oscillator osc;
 //Menu menu;
 
-char const *filename[50] = { 
+char const *filename[8] = { 
                             "Dark Sun Gwyndolin.mid",
                             "Moonlight_Butterfly_Dark_Sun_Gwyndolin_(Dark_Souls).mid",
                             "smw2_title.mid",
@@ -21,7 +20,7 @@ char const *filename[50] = {
 
 int main(void)
 {
-  if(parser.OpenFile(filename[6]))
+  if(parser.OpenFile(filename[3]))
   {
     parser.Play();
     while(parser.Update(osc));
