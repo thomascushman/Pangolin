@@ -2,6 +2,7 @@
 #include "Oscillator.hpp"
 #include "inc/MidiFile.h"
 #include "inc/MidiEventList.h"
+#include "Debug.hpp"
 
 //allocates memory for the midiFile
 MidiParser::MidiParser()
@@ -69,19 +70,32 @@ bool MidiParser::Update(Oscillator &osc)
           if(currentEvent.isNoteOn())
           {
             static int i = 1;
-            printf("NOTE ON, CHANNEL: %d %d\n", currentEvent.getChannelNibble(), i++);
-            osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble());
+            printf("%sNOTE ON: %sCHANNEL: %s%2d, %sVELOCITY: %s%3d, %sTIMES CALLED: %s%3d\n", KNRM, KRED, KNRM, currentEvent.getChannelNibble(), KGRN, KNRM, currentEvent[2], KBLU, KNRM, i++);
+            osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble(), currentEvent[2]);
           }
           else if(currentEvent.isNoteOff())
           {
-            osc.StopNote(currentEvent.getKeyNumber());
+            //static int i = 1;
+            //printf("NOTE OFF, CHANNEL: %d %d\n", currentEvent.getChannelNibble(), i++);
+            osc.StopNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble());
           }
           else if(currentEvent.isTempo())
           {
-            static int i = 1;
-            printf("CHANGE TEMPO: %f %d\n", currentEvent.getTempoBPM(), i++);
+            //static int i = 1;
+            //printf("CHANGE TEMPO: %f %d\n", currentEvent.getTempoBPM(), i++);
             ChangeTempo(currentEvent.getTempoBPM());
           }
+          else if(currentEvent.isController() && (currentEvent[1] & 0xFF) == 7)
+          {
+            //static int i = 1;
+            //printf("VOLUME CHANGE %d\n", i++);
+            osc.SetVolume(currentEvent[2], currentEvent.getChannelNibble());
+          }
+        }
+        //don't bother searching through messages that haven't happened yet
+        else if(currentEvent.tick > absoluteTicks_)
+        {
+          break;
         }
       }
     }

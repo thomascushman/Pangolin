@@ -12,14 +12,14 @@ Oscillator::Oscillator()
   for( int i=0; i < TABLE_SIZE; i++ )
   {
                    //amplitude * Sin((2 * Math.PI * n * frequency) / sampleRate)
-    sine_[i] = (float) (0.025f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
+    sine_[i] = (float) (0.00075f * sin( 27.50f * ((double)i/(double)SAMPLE_RATE * M_PI * 2.0 )));
     square_[i] = 0.02f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
-    triangle_[i] = 0.7f * ((float)i/(float)SAMPLE_RATE);
+    saw_[i] = 0.7f * ((float)i/(float)SAMPLE_RATE);
   }
   waveform_ = sine_;
   for(int i = 0; i < NUM_CHANNELS; ++i)
   {
-    channels_[i].Init(waveform_);
+    channels_[i].SetWaveform(waveform_);
   }
   Open(Pa_GetDefaultOutputDevice());
   
@@ -32,46 +32,24 @@ Oscillator::~Oscillator()
   Close();
 }
 
-void Oscillator::PlayNote(int noteNum, int channel)
+void Oscillator::PlayNote(int noteNum, int channel, int velocity)
 {
-  if(noteNum < 21 || noteNum > 108)
-  {
-    return;
-  }
-  
-  for(int i = 0; i < NUM_CHANNELS; ++i)
-  {
-    if(!channels_[i].IsPlaying())
-    {
-      channels_[i].Play(noteNum, channel);
-      break;
-    }
-    //for recording incident of errors. (shouldn't ever be triggered)
-    if(i == NUM_CHANNELS - 1)
-    {
-      printf("OUT OF CHANNELS\n");
-    }
-  }
+  channels_[channel].PlayNote(noteNum, velocity);
 }
 
-void Oscillator::StopNote(int noteNum)
+void Oscillator::StopNote(int noteNum, int channel)
 {
-  for(int i = 0; i < NUM_CHANNELS; ++i)
-  {
-    if(channels_[i].IsPlaying() && channels_[i].IsNote(noteNum))
-    {
-      channels_[i].Stop();
-      break;
-    }
-  }
+  channels_[channel].StopNote(noteNum);
+}
+
+void Oscillator::SetVolume(int volume, int channel)
+{
+  channels_[channel].SetVolume(volume);
 }
 
 void Oscillator::StopAll()
 {
-  for(int i = 0; i < NUM_CHANNELS; ++i)
-  {
-    channels_[i].Stop();
-  }
+
 }
 
 //PRIVATE METHODS

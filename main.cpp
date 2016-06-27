@@ -8,21 +8,19 @@ MidiParser parser;
 Oscillator osc;
 //Menu menu;
 
-
-//"chpn-p4.mid"
-//"Dark Souls - Great Grey Wolf Sif.mid"
-//"Dark Sun Gwyndolin.mid"
-//"Gwyn_Lord_of_Cinder_Dark_Souls.mid"
-//"Moonlight_Butterfly_Dark_Sun_Gwyndolin_(Dark_Souls).mid"
-//"legendary-hero.mid"
-//"GangnamStyle.mid"
-
-#define filename "Gwyn_Lord_of_Cinder_Dark_Souls.mid"
+char const *filename[7] = { 
+                            "Dark Sun Gwyndolin.mid",
+                            "Moonlight_Butterfly_Dark_Sun_Gwyndolin_(Dark_Souls).mid",
+                            "Dark Souls - Great Grey Wolf Sif.mid",
+                            "Gwyn_Lord_of_Cinder_Dark_Souls.mid",
+                            "legendary-hero.mid",
+                            "chpn-p4.mid",
+                            "GangnamStyle.mid",
+                          };
 
 int main(void)
 {
-  //osc.PlayNote(C[4]);
-  if(parser.OpenFile(filename))
+  if(parser.OpenFile(filename[5]))
   {
     parser.Play();
     while(parser.Update(osc));

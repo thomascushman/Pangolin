@@ -2,9 +2,9 @@
 #define OSCILLATOR_HPP
 
 #include "portaudio.h"
-#include "Note.hpp"
+#include "Channel.hpp"
 
-#define NUM_CHANNELS       (32)
+#define NUM_CHANNELS       (16)
 #define SAMPLE_RATE        (44100)
 #define FRAMES_PER_BUFFER  (500)
 #define TABLE_SIZE         (1600) //remember to update this define in Note.cpp if changed
@@ -14,19 +14,20 @@ class Oscillator
   public:
     Oscillator();
     ~Oscillator();
-    void PlayNote(int noteNum, int channel);
-    void StopNote(int noteNum);
+    void PlayNote(int noteNum, int channel, int velocity);
+    void StopNote(int noteNum, int channel);
+    void SetVolume(int volume, int channel);
     void StopAll();
   
   private:
     PaStream *stream_;
     float *waveform_;
-    Note channels_[NUM_CHANNELS];
+    Channel channels_[NUM_CHANNELS];
     
     //waveforms
     float sine_[TABLE_SIZE];
     float square_[TABLE_SIZE];
-    float triangle_[TABLE_SIZE];
+    float saw_[TABLE_SIZE];
     
     bool Open(PaDeviceIndex index);
     bool Close();
