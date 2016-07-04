@@ -5,7 +5,7 @@
 
 //forward declarations for midi library
 class MidiFile;
-class MidiEventList;
+class MidiEvent;
 class Oscillator;
 
 class MidiParser
@@ -25,9 +25,14 @@ class MidiParser
     bool hasFile_;
     bool isPlaying_;
     int pulsesPerQuarter_;
-    long microSecondsPerTick_ = -1;
-    int absoluteTicks_ = 0;
+    long microSecondsPerTick_;
+    int absoluteTicks_;
     Timer timer;
+    
+    bool IsNoteOn(const MidiEvent& event);
+    bool IsNoteOff(const MidiEvent& event);
+    bool IsTempo(const MidiEvent& event);
+    bool IsVolume(const MidiEvent& event);
 };
 
 

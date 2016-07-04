@@ -1,5 +1,6 @@
 #include "Note.hpp"
 #include <math.h>
+#include <cstdlib>
 
 #define TABLE_SIZE (1600)
 
@@ -30,27 +31,54 @@ void Note::Stop()
 float Note::GetSample()
 {
   float sample = 0;
-  if(active_)
+  if(waveform_)
   {
-    phase_ += samplingIncrement_;
-    if(phase_ >= TABLE_SIZE)
+    if(active_)
     {
-      phase_ -= TABLE_SIZE;
+      phase_ += samplingIncrement_;
+      if(phase_ >= TABLE_SIZE)
+      {
+        phase_ -= TABLE_SIZE;
+      }
+      sample = waveform_[(int)phase_];
     }
-    sample = waveform_[(int)phase_];
-  }
-  else if((int)phase_ <= TABLE_SIZE)
-  {
-    phase_ += samplingIncrement_;
-    if(phase_ >= TABLE_SIZE)
+    else if((int)phase_ < TABLE_SIZE && (int)phase_ != 0)
     {
-      phase_ -= TABLE_SIZE;
+      phase_ += samplingIncrement_;
+      if(phase_ >= TABLE_SIZE)
+      {
+        phase_ = 0;
+      }
+      else
+      {
+        sample = waveform_[(int)phase_];
+      }
     }
-    sample = waveform_[(int)phase_];
   }
-  else if(phase_ != 0)
+  //for drum channels only
+  else
   {
-    phase_ = 0;
+    if(active_)
+    {
+      phase_ += samplingIncrement_;
+      if(phase_ >= TABLE_SIZE)
+      {
+        phase_ -= TABLE_SIZE;
+      }
+      //sample = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 0.0002f;
+    }
+    else if((int)phase_ < TABLE_SIZE && (int)phase_ != 0)
+    {
+      phase_ += samplingIncrement_;
+      if(phase_ >= TABLE_SIZE)
+      {
+        phase_ = 0;
+      }
+      else
+      {
+        //sample = static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 0.0002f;
+      }
+    }
   }
   
   return sample * velocity_;

@@ -1,14 +1,13 @@
 #include "MidiParser.hpp"
 #include "Oscillator.hpp"
 #include "inc/MidiFile.h"
-#include "inc/MidiEventList.h"
 #include "Debug.hpp"
 
 //allocates memory for the midiFile
 MidiParser::MidiParser()
   : hasFile_(false)
 {
-  midiFile_ = new MidiFile();
+  //midiFile_ = new MidiFile();
 }
 
 MidiParser::~MidiParser()
@@ -20,6 +19,11 @@ MidiParser::~MidiParser()
 //returns true or false based on whether it could be opened
 bool MidiParser::OpenFile(const char *file)
 {
+  delete midiFile_;
+  midiFile_ = new MidiFile();
+  absoluteTicks_ = 0;
+  microSecondsPerTick_ = -1;
+  
   hasFile_ = midiFile_->read(file) ? true : false;
   if(hasFile_)
   {
@@ -67,25 +71,23 @@ bool MidiParser::Update(Oscillator &osc)
         MidiEvent currentEvent = midiFile_->getEvent(0, i);
         if(currentEvent.tick == absoluteTicks_)
         {
-          if(currentEvent.isNoteOn())
+          if(IsNoteOn(currentEvent))
           {
             Debug::Print_Stats(Debug::NOTE_ON, currentEvent);
             osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble(), currentEvent[2]);
           }
-          else if(currentEvent.isNoteOff())
+          else if(IsNoteOff(currentEvent))
           {
             Debug::Print_Stats(Debug::NOTE_OFF, currentEvent);
             osc.StopNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble());
           }
-          else if(currentEvent.isTempo())
+          else if(IsTempo(currentEvent))
           {
             Debug::Print_Stats(Debug::TEMPO_CHANGE, currentEvent);
             ChangeTempo(currentEvent.getTempoBPM());
           }
-          else if(currentEvent.isController() && (currentEvent[1] & 0xFF) == 7)
+          else if(IsVolume(currentEvent))
           {
-            //static int i = 1;
-            //printf("VOLUME CHANGE %d\n", i++);
             osc.SetVolume(currentEvent[2], currentEvent.getChannelNibble());
           }
         }
@@ -114,4 +116,29 @@ bool MidiParser::IsPlaying(void)
 void MidiParser::ChangeTempo(double bpm)
 {
   microSecondsPerTick_ = static_cast<long>(((60000 / (bpm * pulsesPerQuarter_))) * 1000);
+}
+
+bool MidiParser::IsNoteOn(const MidiEvent& event)
+{
+  return ((event[0] & 0xF0) == 0x90) &&
+         ((event[2] & 0xFF) != 0x00);
+}
+
+bool MidiParser::IsNoteOff(const MidiEvent& event)
+{
+  return ((event[0] & 0xF0) == 0x80) ||
+         (((event[0] & 0xF0) == 0x90) &&
+         ((event[2] & 0xFF) == 0x00));
+}
+
+bool MidiParser::IsTempo(const MidiEvent& event)
+{
+  return ((event[0] & 0xFF) == 0xFF) &&
+         ((event[1] & 0xFF) == 0x51);
+}
+
+bool MidiParser::IsVolume(const MidiEvent& event)
+{
+  return ((event[0] & 0xF0) == 0xB0) && 
+         ((event[1] & 0x0F) == 0x07);
 }

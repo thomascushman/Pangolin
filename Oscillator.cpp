@@ -1,5 +1,7 @@
 #include "Oscillator.hpp"
 #include <math.h>
+#include <ctime>
+#include <cstdlib>
 
 // PUBLIC METHODS
 
@@ -7,6 +9,8 @@ Oscillator::Oscillator()
   : stream_(nullptr)
 {
   Pa_Initialize();
+  srand(static_cast<unsigned int>(time(0)));
+  
   /* initialise sinusoidal wavetable */
   for( int i=0; i < TABLE_SIZE; i++ )
   {
@@ -15,10 +19,17 @@ Oscillator::Oscillator()
     square_[i] = 0.0002f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
     saw_[i] = 0.007f * ((float)i/(float)SAMPLE_RATE);
   }
-  waveform_ = sine_;
+  waveform_ = saw_;
   for(int i = 0; i < NUM_CHANNELS; ++i)
   {
-    channels_[i].SetWaveform(waveform_);
+    if(i == 9)
+    {
+      channels_[i].SetWaveform(nullptr);
+    }
+    else 
+    {
+      channels_[i].SetWaveform(waveform_);
+    }
   }
   Open(Pa_GetDefaultOutputDevice());
   
