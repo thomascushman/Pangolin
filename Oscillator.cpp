@@ -19,7 +19,7 @@ Oscillator::Oscillator()
     square_[i] = 0.0002f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
     saw_[i] = 0.007f * ((float)i/(float)SAMPLE_RATE);
   }
-  waveform_ = sine_;
+  waveform_ = saw_;
   for(int i = 0; i < NUM_CHANNELS; ++i)
   {
     if(i == 9)

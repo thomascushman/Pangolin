@@ -48,6 +48,18 @@ float Note::GetSample()
       }
       sample = waveform_[(int)phase_];
     }
+    else if(phase_ != 0)
+    {
+      phase_ += samplingIncrement_;
+      if(phase_ >= TABLE_SIZE)
+      {
+        phase_ = 0;
+      }
+      else
+      {
+        sample = waveform_[(int)phase_];
+      }
+    }
   } 
   return sample * currentVolume_;
 }
