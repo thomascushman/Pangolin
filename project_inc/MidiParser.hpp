@@ -24,6 +24,7 @@ class MidiParser
     MidiFile *midiFile_;
     bool hasFile_;
     bool isPlaying_;
+    bool hasTempo_;
     int pulsesPerQuarter_;
     long microSecondsPerTick_;
     int absoluteTicks_;

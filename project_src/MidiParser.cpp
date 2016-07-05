@@ -42,6 +42,11 @@ bool MidiParser::OpenFile(const char *file)
         break;
       }
     }
+    if(!hasTempo_)
+    {
+      ChangeTempo(120);
+    }
+    
   }
   return hasFile_;
 }
@@ -119,6 +124,7 @@ bool MidiParser::IsPlaying(void)
 void MidiParser::ChangeTempo(double bpm)
 {
   microSecondsPerTick_ = static_cast<long>(((60000 / (bpm * pulsesPerQuarter_))) * 1000);
+  hasTempo_ = true;
 }
 
 bool MidiParser::IsNoteOn(const MidiEvent& event)
