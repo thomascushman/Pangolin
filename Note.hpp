@@ -16,6 +16,16 @@ static const int A[9]       = { 21, 33, 45, 57, 69, 81, 93, 101, 175 };
 static const int A_Sharp[9] = { 22, 34, 46, 58, 70, 82, 94, 101, 186 };
 static const int B[9]       = { 23, 35, 47, 59, 71, 83, 95, 101, 197 };
 
+enum ENVELOPE_STATE
+{
+  NOTE_ON,
+  ATTACK,
+  DECAY,
+  SUSTAIN,
+  RELEASE,
+  NOTE_OFF,
+};
+
 
 class Note
 {
@@ -29,12 +39,19 @@ class Note
     bool IsNote(int noteNum);
     
   private:
-    int noteNum_;
-    float velocity_;
+    //meta
     bool active_;
+    //frequency related
+    int noteNum_;
     float phase_;
     float samplingIncrement_;
     float *waveform_;
+    //amplitude related
+    float velocity_;
+    ENVELOPE_STATE state_;
+    float envelopeVolume_;
+    
+    float GetEnvelope();
 };
 
 #endif
