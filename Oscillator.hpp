@@ -14,7 +14,7 @@ class Oscillator
   public:
     Oscillator();
     ~Oscillator();
-    void PlayNote(int noteNum, int channel, int velocity);
+    void PlayNote(int noteNum, int channel, int velocity, long durationInMicro);
     void StopNote(int noteNum, int channel);
     void SetVolume(int volume, int channel);
     void StopAll();

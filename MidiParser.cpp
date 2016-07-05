@@ -27,9 +27,11 @@ bool MidiParser::OpenFile(const char *file)
   hasFile_ = midiFile_->read(file) ? true : false;
   if(hasFile_)
   {
-    midiFile_->joinTracks();
-    midiFile_->absoluteTicks();
     pulsesPerQuarter_ = midiFile_->getTicksPerQuarterNote();
+    midiFile_->linkNotePairs();
+    midiFile_->joinTracks();
+    midiFile_->doTimeAnalysis();
+    midiFile_->absoluteTicks();
 
     //get starting tempo
     for(int i = 0; i < midiFile_->getEventCount(0); ++i)
@@ -74,7 +76,8 @@ bool MidiParser::Update(Oscillator &osc)
           if(IsNoteOn(currentEvent))
           {
             Debug::Print_Stats(Debug::NOTE_ON, currentEvent);
-            osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble(), currentEvent[2]);
+            currentEvent.getDurationInSeconds();
+            osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble(), currentEvent[2], static_cast<long>(currentEvent.seconds * 1000000));
           }
           else if(IsNoteOff(currentEvent))
           {

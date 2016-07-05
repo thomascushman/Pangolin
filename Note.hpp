@@ -1,7 +1,7 @@
 #ifndef NOTE_HPP
 #define NOTE_HPP
 
-#include "Timer.hpp"
+#include "ADSR.hpp"
 
 static const int C[9]       = { 12, 24, 36, 48, 60, 72, 84, 96,  108 };
 static const int C_Sharp[9] = { 13, 25, 37, 49, 61, 73, 85, 97,  109 };
@@ -16,23 +16,13 @@ static const int A[9]       = { 21, 33, 45, 57, 69, 81, 93, 101, 175 };
 static const int A_Sharp[9] = { 22, 34, 46, 58, 70, 82, 94, 101, 186 };
 static const int B[9]       = { 23, 35, 47, 59, 71, 83, 95, 101, 197 };
 
-enum ENVELOPE_STATE
-{
-  NOTE_ON,
-  ATTACK,
-  DECAY,
-  SUSTAIN,
-  RELEASE,
-  NOTE_OFF,
-};
-
 
 class Note
 {
   public:
     Note();
     void Init(float *waveform);
-    void Play(int noteNum, int velocity);
+    void Play(int noteNum, int velocity, long durationInMicro);
     void Stop();
     float GetSample();
     bool IsPlaying();
@@ -48,10 +38,8 @@ class Note
     float *waveform_;
     //amplitude related
     float velocity_;
-    ENVELOPE_STATE state_;
-    float envelopeVolume_;
-    
-    float GetEnvelope();
+    float currentVolume_;
+    ADSR adsr_;
 };
 
 #endif

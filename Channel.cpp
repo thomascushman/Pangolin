@@ -21,7 +21,7 @@ void Channel::SetVolume(int volume)
   volume_ = (volume / 64.0f);
 }
 
-void Channel::PlayNote(int noteNum, int velocity)
+void Channel::PlayNote(int noteNum, int velocity, long durationInMicro)
 {
   if(noteNum < 21 || noteNum > 108)
   {
@@ -34,7 +34,7 @@ void Channel::PlayNote(int noteNum, int velocity)
   {
     if(!slots_[i].IsPlaying())
     {
-      slots_[i].Play(noteNum, velocity);
+      slots_[i].Play(noteNum, velocity, durationInMicro);
       break;
     }
     else if(slots_[i].IsNote(noteNum))

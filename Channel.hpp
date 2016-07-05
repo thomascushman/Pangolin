@@ -10,7 +10,7 @@ class Channel
     Channel();
     void SetWaveform(float *waveform);
     void SetVolume(int volume);
-    void PlayNote(int noteNum, int velocity);
+    void PlayNote(int noteNum, int velocity, long durationInMicro);
     void StopNote(int noteNum);
     float GetSample();
   

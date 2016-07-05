@@ -11,6 +11,7 @@ void Timer::Start(long durationInMicro)
   durationInMicro_ = durationInMicro;
 }
 
+//place in any function called exactly once per frame
 bool Timer::Update()
 {
   if(active_)

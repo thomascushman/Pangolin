@@ -42,9 +42,9 @@ Oscillator::~Oscillator()
   Close();
 }
 
-void Oscillator::PlayNote(int noteNum, int channel, int velocity)
+void Oscillator::PlayNote(int noteNum, int channel, int velocity, long durationInMicro)
 {
-  channels_[channel].PlayNote(noteNum, velocity);
+  channels_[channel].PlayNote(noteNum, velocity, durationInMicro);
 }
 
 void Oscillator::StopNote(int noteNum, int channel)

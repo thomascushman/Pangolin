@@ -11,7 +11,7 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 
 OUTDIR=./clang/
 ERASE=rm
-OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)oscillator.o $(OUTDIR)note.o $(OUTDIR)midiparser.o $(OUTDIR)timer.o $(OUTDIR)channel.o $(OUTDIR)debug.o
+OBJECTS=$(OUTDIR)main.o $(OUTDIR)menu.o $(OUTDIR)oscillator.o $(OUTDIR)note.o $(OUTDIR)midiparser.o $(OUTDIR)timer.o $(OUTDIR)channel.o $(OUTDIR)debug.o $(OUTDIR)adsr.o
 EXE=Pangolin.exe
 
 # Targets ========================================
@@ -42,6 +42,9 @@ $(OUTDIR)channel.o : Channel.cpp Channel.hpp
 	
 $(OUTDIR)debug.o : Debug.hpp
 	$(CC) $(CFLAGS) $(INC) -c Debug.cpp -o $(OUTDIR)debug.o
+	
+$(OUTDIR)adsr.o : ADSR.cpp ADSR.hpp
+	$(CC) $(CFLAGS) $(INC) -c ADSR.cpp -o $(OUTDIR)adsr.o
 	
 clean :
 	$(ERASE) $(EXE) $(OBJECTS)
