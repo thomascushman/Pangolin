@@ -14,14 +14,14 @@ HDIR=./project_inc/
 OUTDIR=./clang/
 ERASE=rm
 OBJECTS=$(OUTDIR)main.o \
-	$(OUTDIR)menu.o \
-	$(OUTDIR)oscillator.o \
-	$(OUTDIR)note.o \
-	$(OUTDIR)midiparser.o \
-	$(OUTDIR)timer.o \
-	$(OUTDIR)channel.o \
-	$(OUTDIR)debug.o \
-	$(OUTDIR)adsr.o
+				$(OUTDIR)menu.o \
+				$(OUTDIR)oscillator.o \
+				$(OUTDIR)note.o \
+				$(OUTDIR)midiparser.o \
+				$(OUTDIR)timer.o \
+				$(OUTDIR)channel.o \
+				$(OUTDIR)debug.o \
+				$(OUTDIR)adsr.o
 EXE=Pangolin.exe
 
 # Targets ========================================
