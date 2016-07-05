@@ -13,7 +13,7 @@ void ADSR::Init(long durationInMicro, float velocity)
   sustainDuration_ = durationInMicro - attackDuration_ - decayDuration_ - releaseDuration_; //everything besides ADR is left for sustain
   sustainScaling_ = 1.0f;
   releaseDuration_ = durationInMicro / 4; //1/4th of note is release time
-  releaseScaling_ = 0.99f; 
+  releaseScaling_ = 0.99f;
 }
 
 float ADSR::GetEnvelope()

@@ -1,4 +1,4 @@
-#include "Debug.hpp"
+#include "../project_inc/Debug.hpp"
 
 void Debug::Print_Stats(MESSAGE_TYPE type, MidiEvent& currentEvent)
   {

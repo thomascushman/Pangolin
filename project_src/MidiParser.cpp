@@ -1,6 +1,6 @@
 #include "MidiParser.hpp"
 #include "Oscillator.hpp"
-#include "inc/MidiFile.h"
+#include "MidiFile.h"
 #include "Debug.hpp"
 
 //allocates memory for the midiFile
