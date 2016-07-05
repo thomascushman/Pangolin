@@ -28,6 +28,7 @@ class ADSR
     long decayDuration_;
     float decayScaling_;
     long sustainDuration_;
+    float sustainScaling_;
     long releaseDuration_;
     float releaseScaling_;
     

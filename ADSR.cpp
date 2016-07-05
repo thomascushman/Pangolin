@@ -4,15 +4,16 @@
 void ADSR::Init(long durationInMicro, float velocity)
 {
   state_ = NOTE_ON;
-  velocity_ = velocity;
-  attackDuration_ = durationInMicro / 16 * 1;
-  printf("%ld", attackDuration_);
+  currentVolume_ = velocity_ = velocity;
+  
+  attackDuration_ = 2000;
   attackScaling_ = 1.2f;
-  decayDuration_ = durationInMicro / 16 * 1;
+  decayDuration_ = durationInMicro / 16 * 3;
   decayScaling_ = 0.995f;
-  sustainDuration_ = durationInMicro / 16 * 10;
-  releaseDuration_ = durationInMicro / 16 * 4;
-  releaseScaling_ = 1.0f;
+  sustainDuration_ = durationInMicro - attackDuration_ - decayDuration_ - releaseDuration_;
+  sustainScaling_ = 1.0f;
+  releaseDuration_ = durationInMicro / 4;
+  releaseScaling_ = 0.99f;
 }
 
 float ADSR::GetEnvelope()
@@ -47,9 +48,9 @@ float ADSR::GetEnvelope()
       if(timer_.Update())
       {
         currentVolume_ *= decayScaling_;
-        if(currentVolume_ < velocity_ * 0.9f)
+        if(currentVolume_ < velocity_ * 0.5f)
         {
-          currentVolume_ = velocity_ * 0.9f;
+          currentVolume_ = velocity_ * 0.5f;
         }
       }
       else
@@ -61,7 +62,11 @@ float ADSR::GetEnvelope()
     }
     case SUSTAIN:
     {
-      if(!timer_.Update())
+      if(timer_.Update())
+      {
+        currentVolume_ *= sustainScaling_;
+      }
+      else
       {
         state_ = RELEASE;
         timer_.Start(releaseDuration_);
@@ -82,7 +87,7 @@ float ADSR::GetEnvelope()
     }
     case NOTE_OFF:
     {
-      //currentVolume_ = 0.0f;
+      currentVolume_ = 0.0f;
     }
   }
   return currentVolume_;

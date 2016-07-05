@@ -37,6 +37,7 @@ float Note::GetSample()
   float sample = 0;
   if(waveform_)
   {
+    //fix the phase drop-off when freshly inactive
     if(active_)
     {
       phase_ += samplingIncrement_;
