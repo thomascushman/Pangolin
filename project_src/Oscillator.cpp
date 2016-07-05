@@ -5,6 +5,8 @@
 
 // PUBLIC METHODS
 
+static float* waves[NUM_WAVES];
+
 Oscillator::Oscillator()
   : stream_(nullptr)
 {
@@ -19,18 +21,12 @@ Oscillator::Oscillator()
     square_[i] = 0.0002f * ((i < TABLE_SIZE / 2) ? 1.0f : 0.0f);
     saw_[i] = 0.007f * ((float)i/(float)SAMPLE_RATE);
   }
-  waveform_ = sine_;
-  for(int i = 0; i < NUM_CHANNELS; ++i)
-  {
-    if(i == 9)
-    {
-      channels_[i].SetWaveform(nullptr);
-    }
-    else 
-    {
-      channels_[i].SetWaveform(waveform_);
-    }
-  }
+  
+  waves[SINE] = sine_;
+  waves[SQUARE] = square_;
+  waves[SAW] = saw_;
+  
+  ChangeWaveform(SQUARE);
   Open(Pa_GetDefaultOutputDevice());
   
   Start();
@@ -60,6 +56,22 @@ void Oscillator::SetVolume(int volume, int channel)
 void Oscillator::StopAll()
 {
 
+}
+
+void Oscillator::ChangeWaveform(WAVEFORM wave)
+{
+  waveform_ = waves[wave];
+  for(int i = 0; i < NUM_CHANNELS; ++i)
+  {
+    if(i == 9)
+    {
+      channels_[i].SetWaveform(nullptr);
+    }
+    else 
+    {
+      channels_[i].SetWaveform(waveform_);
+    }
+  }
 }
 
 //PRIVATE METHODS

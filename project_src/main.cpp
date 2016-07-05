@@ -10,15 +10,28 @@ Oscillator osc;
 
 int main(int argc, char* argv[])
 {
-  if(argc > 1)
+  if(argc > 2)
   {
-    for(int i = 1; i < argc; ++i)
+    if(static_cast<WAVEFORM>(atoi(argv[1])) < NUM_WAVES)
+    {
+      osc.ChangeWaveform(static_cast<WAVEFORM>(atoi(argv[1])));
+    }
+    else
+    {
+      printf("NUMBER TOO HIGH. IGNORING YOU AND PLAYING SQUARE WAVE\n");
+    }
+    for(int i = 2; i < argc; ++i)
     {
       if(parser.OpenFile(argv[i]))
       {
         parser.Play();
         while(parser.Update(osc));
       }
+      else
+      {
+        printf("INVALID MIDI NAME\n");
+      }
+      
       if(i < argc - 1)
       {
         printf("CHANGING SONGS\n\n");
@@ -27,7 +40,7 @@ int main(int argc, char* argv[])
   }
   else
   {
-    printf("PLEASE INPUT A MIDI FILENAME\n");
+    printf("PLEASE INPUT A NUMBER AND A MIDI FILENAME\n");
   }
 
   //while(menu.Update(osc));

@@ -9,6 +9,14 @@
 #define FRAMES_PER_BUFFER  (500)
 #define TABLE_SIZE         (1600) //remember to update this define in Note.cpp if changed
 
+enum WAVEFORM
+{
+  SINE,
+  SAW,
+  SQUARE,
+  NUM_WAVES
+};
+
 class Oscillator
 {
   public:
@@ -18,6 +26,7 @@ class Oscillator
     void StopNote(int noteNum, int channel);
     void SetVolume(int volume, int channel);
     void StopAll();
+    void ChangeWaveform(WAVEFORM wave);
   
   private:
     PaStream *stream_;
