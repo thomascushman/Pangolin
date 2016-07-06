@@ -20,15 +20,20 @@ class ADSR
     float GetEnvelope();
   private:
     ENVELOPE_STATE state_;
+    //initial velocity of note (set in init only)
     float velocity_;
     float currentVolume_;
     
+    //A
     long attackDuration_;
     float attackScaling_;
+    //D
     long decayDuration_;
     float decayScaling_;
+    //S
     long sustainDuration_;
     float sustainScaling_;
+    //R
     long releaseDuration_;
     float releaseScaling_;
     

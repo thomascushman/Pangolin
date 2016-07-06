@@ -4,39 +4,35 @@
 #include <stdio.h>
 #include "MidiEvent.h"
 
-#define KNRM  "\x1B[0m"
-#define KRED  "\x1B[31m"
-#define KGRN  "\x1B[32m"
-#define KYEL  "\x1B[33m"
-#define KBLU  "\x1B[34m"
-#define KMAG  "\x1B[35m"
-#define KCYN  "\x1B[36m"
-#define KWHT  "\x1B[37m"
-
-/* Usage:
-    printf("%sred\n", KRED);
-    printf("%sgreen\n", KGRN);
-    printf("%syellow\n", KYEL);
-    printf("%sblue\n", KBLU);
-    printf("%smagenta\n", KMAG);
-    printf("%scyan\n", KCYN);
-    printf("%swhite\n", KWHT);
-    printf("%snormal\n", KNRM);
-*/
-
 class MidiEvent;
 
 namespace Debug
 {
   enum MESSAGE_TYPE
   {
-    NOTE_ON,
     NOTE_OFF,
+    NOTE_ON,
     VOLUME_CHANGE,
     TEMPO_CHANGE,
   };
   
-  void Print_Stats(MESSAGE_TYPE type, MidiEvent& currentEvent);
+  class Stats
+  {
+    public:
+      Stats();
+      ~Stats();
+      void AddToStats(int keyNum, int channel, int velocity);
+      void RemoveFromStats(int keyNum, int channel);
+      void Print_Stats();
+      
+    private:
+      int keyNum_[32];
+      int channel_[32];
+      int velocity_[32];
+      bool occupied_[32];
+  };
 }
+
+extern Debug::Stats stats;
 
 #endif

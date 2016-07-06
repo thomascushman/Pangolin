@@ -1,4 +1,3 @@
-//#include "Menu.hpp"
 #include "Oscillator.hpp"
 #include "MidiParser.hpp"
 #include "Timer.hpp"
@@ -6,7 +5,7 @@
 
 MidiParser parser;
 Oscillator osc;
-//Menu menu;
+Debug::Stats stats;
 
 int main(int argc, char* argv[])
 {
@@ -25,16 +24,17 @@ int main(int argc, char* argv[])
       if(parser.OpenFile(argv[i]))
       {
         parser.Play();
-        while(parser.Update(osc));
+        while(true)
+        {
+          if(!parser.Update(osc))
+          {
+            break;
+          }
+        }
       }
       else
       {
         printf("INVALID MIDI NAME\n");
-      }
-      
-      if(i < argc - 1)
-      {
-        printf("CHANGING SONGS\n\n");
       }
     }
   }
@@ -42,7 +42,5 @@ int main(int argc, char* argv[])
   {
     printf("PLEASE INPUT A NUMBER AND A MIDI FILENAME\n");
   }
-
-  //while(menu.Update(osc));
   return 0;
 }

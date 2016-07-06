@@ -15,6 +15,7 @@ class MidiParser
     ~MidiParser();
     bool OpenFile(const char* file);
     void Play(void);
+    void Stop(void);
     bool Update(Oscillator &osc);
     bool HasFile(void);
     bool IsPlaying(void);

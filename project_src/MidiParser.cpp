@@ -57,6 +57,11 @@ void MidiParser::Play(void)
   timer.Start(microSecondsPerTick_);
 }
 
+void MidiParser::Stop(void)
+{
+  isPlaying_ = false;
+}
+
 bool MidiParser::Update(Oscillator &osc)
 {
   if(timer.IsActive())
@@ -80,18 +85,15 @@ bool MidiParser::Update(Oscillator &osc)
         {
           if(IsNoteOn(currentEvent))
           {
-            Debug::Print_Stats(Debug::NOTE_ON, currentEvent);
             currentEvent.getDurationInSeconds();
             osc.PlayNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble(), currentEvent[2], static_cast<long>(currentEvent.seconds * 1000000));
           }
           else if(IsNoteOff(currentEvent))
           {
-            Debug::Print_Stats(Debug::NOTE_OFF, currentEvent);
             osc.StopNote(currentEvent.getKeyNumber(), currentEvent.getChannelNibble());
           }
           else if(IsTempo(currentEvent))
           {
-            Debug::Print_Stats(Debug::TEMPO_CHANGE, currentEvent);
             ChangeTempo(currentEvent.getTempoBPM());
           }
           else if(IsVolume(currentEvent))
@@ -105,9 +107,9 @@ bool MidiParser::Update(Oscillator &osc)
           break;
         }
       }
+      stats.Print_Stats();
     }
   }
-    
   return isPlaying_;
 }
 

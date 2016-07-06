@@ -14,7 +14,6 @@ HDIR=./project_inc/
 OUTDIR=./clang/
 ERASE=rm
 OBJECTS=$(OUTDIR)main.o \
-				$(OUTDIR)menu.o \
 				$(OUTDIR)oscillator.o \
 				$(OUTDIR)note.o \
 				$(OUTDIR)midiparser.o \
@@ -31,9 +30,6 @@ $(EXE) : $(OBJECTS)
 
 $(OUTDIR)main.o : $(SDIR)main.cpp
 	$(CC) $(CFLAGS) $(INC) -c $(SDIR)main.cpp -o $(OUTDIR)main.o
-	
-$(OUTDIR)menu.o : $(SDIR)Menu.cpp $(HDIR)Menu.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Menu.cpp -o $(OUTDIR)menu.o
 	
 $(OUTDIR)oscillator.o : $(SDIR)Oscillator.cpp $(HDIR)Oscillator.hpp
 	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Oscillator.cpp -o $(OUTDIR)oscillator.o

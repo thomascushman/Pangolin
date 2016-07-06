@@ -22,14 +22,19 @@ float ADSR::GetEnvelope()
   {
     case NOTE_ON:
     {
+      //initial volume at velocity (volume will change in other cases)
       currentVolume_ = velocity_;
+      //start attack
       state_ = ATTACK;
       timer_.Start(attackDuration_);
+      //fall through into attack
     }
     case ATTACK:
     {
+      //if timer still going
       if(timer_.Update())
       {
+        //increase volume
         currentVolume_ *= attackScaling_;
         if(currentVolume_ > velocity_ * 2.0f)
         {
@@ -38,6 +43,7 @@ float ADSR::GetEnvelope()
       }
       else
       {
+        //start our decay
         state_ = DECAY;
         timer_.Start(decayDuration_);
       }
@@ -45,8 +51,10 @@ float ADSR::GetEnvelope()
     }
     case DECAY:
     {
+      //if timer still going
       if(timer_.Update())
       {
+        //decrease volume
         currentVolume_ *= decayScaling_;
         if(currentVolume_ < velocity_ * 0.5f)
         {
@@ -55,6 +63,7 @@ float ADSR::GetEnvelope()
       }
       else
       {
+        //start sustain
         state_ = SUSTAIN;
         timer_.Start(sustainDuration_);
       }
@@ -62,12 +71,15 @@ float ADSR::GetEnvelope()
     }
     case SUSTAIN:
     {
+      //if timer still going
       if(timer_.Update())
       {
+        //do nothing (sustainScaling_ set to 1.0f as of the time of this comment)
         currentVolume_ *= sustainScaling_;
       }
       else
       {
+        //start release
         state_ = RELEASE;
         timer_.Start(releaseDuration_);
       }
@@ -75,15 +87,19 @@ float ADSR::GetEnvelope()
     }
     case RELEASE:
     {
+      //if timer still going
       if(timer_.Update())
       {
+        //decrease volume
         currentVolume_ *= releaseScaling_;
+        break;
       }
       else
       {
+        //NOTE OFF
         state_ = NOTE_OFF;
       }
-      break;
+      //fall through into note off
     }
     case NOTE_OFF:
     {

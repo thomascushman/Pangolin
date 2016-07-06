@@ -1,4 +1,5 @@
 #include "Oscillator.hpp"
+#include "Debug.hpp"
 #include <math.h>
 #include <ctime>
 #include <cstdlib>
@@ -40,11 +41,13 @@ Oscillator::~Oscillator()
 
 void Oscillator::PlayNote(int noteNum, int channel, int velocity, long durationInMicro)
 {
+  stats.AddToStats(noteNum, channel, velocity);
   channels_[channel].PlayNote(noteNum, velocity, durationInMicro);
 }
 
 void Oscillator::StopNote(int noteNum, int channel)
 {
+  stats.RemoveFromStats(noteNum, channel);
   channels_[channel].StopNote(noteNum);
 }
 
