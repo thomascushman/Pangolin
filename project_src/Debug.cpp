@@ -28,6 +28,8 @@ Debug::Stats::Stats()
   {
     keyNum_[i] = channel_[i] = velocity_[i] = occupied_[i] = 0;
   }
+  filename_ = nullptr;
+  tempo_ = 0;
 }
 
 Debug::Stats::~Stats()
@@ -35,7 +37,7 @@ Debug::Stats::~Stats()
   endwin();
 }
 
-void Debug::Stats::AddToStats(int keyNum, int channel, int velocity)
+void Debug::Stats::AddNoteToStats(int keyNum, int channel, int velocity)
 {
   for(int i = 0; i < 32; ++i)
   {
@@ -50,7 +52,7 @@ void Debug::Stats::AddToStats(int keyNum, int channel, int velocity)
   }
 }
 
-void Debug::Stats::RemoveFromStats(int keyNum, int channel)
+void Debug::Stats::RemoveNoteFromStats(int keyNum, int channel)
 {
   for(int i = 0; i < 32; ++i)
   {
@@ -65,33 +67,57 @@ void Debug::Stats::RemoveFromStats(int keyNum, int channel)
   }
 }
 
+void Debug::Stats::SetTempo(double tempo)
+{
+  tempo_ = tempo;
+}
+
+void Debug::Stats::SetFilename(const char* name)
+{
+  filename_ = name;
+}
+
 void Debug::Stats::Print_Stats()
 {
+  //print tempo
+  mvprintw(3, 11, "Filename: ");
+  attron(COLOR_PAIR(MAGENTA_BLACK));
+  mvprintw(3, 23, "%s", filename_);
+  attroff(COLOR_PAIR(MAGENTA_BLACK));
+  printw("\n");
+  
+  //print tempo
+  mvprintw(5, 14, "Tempo: ");
+  attron(COLOR_PAIR(GREEN_BLACK));
+  mvprintw(5, 23, "%3.2f", tempo_);
+  attroff(COLOR_PAIR(GREEN_BLACK));
+  printw("\n");
+  
   for(int i = 0; i < 32; ++i)
   {
     if(!occupied_[i])
       continue;
     
     //print key number
-    mvprintw(3, 9, "Key Number: ");
+    mvprintw(7, 9, "Key Number: ");
     attron(COLOR_PAIR(RED_BLACK));
-    mvprintw(3, 21 + i * 3, "%d", keyNum_[i]);
+    mvprintw(7, 21 + i * 4, "%4d", keyNum_[i]);
     attroff(COLOR_PAIR(RED_BLACK));
     clrtoeol();
     printw("\n");
     
     //print channel number
-    mvprintw(5, 5, "Channel Number: ");
+    mvprintw(9, 5, "Channel Number: ");
     attron(COLOR_PAIR(BLUE_BLACK));
-    mvprintw(5, 21 + i * 3, "%d", channel_[i]);
+    mvprintw(9, 21 + i * 4, "%4d", channel_[i]);
     attroff(COLOR_PAIR(BLUE_BLACK));
     clrtoeol();
     printw("\n");
     
     //print velocity
-    mvprintw(7, 11, "Velocity: ");
+    mvprintw(11, 11, "Velocity: ");
     attron(COLOR_PAIR(YELLOW_BLACK));
-    mvprintw(7, 21 + i * 3, "%d", velocity_[i]);
+    mvprintw(11, 21 + i * 4, "%4d", velocity_[i]);
     attroff(COLOR_PAIR(YELLOW_BLACK));
     clrtoeol();
     printw("\n");

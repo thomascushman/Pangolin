@@ -27,6 +27,7 @@ bool MidiParser::OpenFile(const char *file)
   hasFile_ = midiFile_->read(file) ? true : false;
   if(hasFile_)
   {
+    stats.SetFilename(midiFile_->getFilename());
     pulsesPerQuarter_ = midiFile_->getTicksPerQuarterNote();
     midiFile_->linkNotePairs();
     midiFile_->joinTracks();
@@ -38,6 +39,7 @@ bool MidiParser::OpenFile(const char *file)
     {
       if(midiFile_->getEvent(0, i).isTempo() && microSecondsPerTick_ == -1)
       {
+        stats.SetTempo(midiFile_->getEvent(0, i).getTempoBPM());
         ChangeTempo(midiFile_->getEvent(0, i).getTempoBPM());
         break;
       }
@@ -94,6 +96,7 @@ bool MidiParser::Update(Oscillator &osc)
           }
           else if(IsTempo(currentEvent))
           {
+            stats.SetTempo(currentEvent.getTempoBPM());
             ChangeTempo(currentEvent.getTempoBPM());
           }
           else if(IsVolume(currentEvent))

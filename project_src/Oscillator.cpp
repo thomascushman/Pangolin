@@ -41,13 +41,13 @@ Oscillator::~Oscillator()
 
 void Oscillator::PlayNote(int noteNum, int channel, int velocity, long durationInMicro)
 {
-  stats.AddToStats(noteNum, channel, velocity);
+  stats.AddNoteToStats(noteNum, channel, velocity);
   channels_[channel].PlayNote(noteNum, velocity, durationInMicro);
 }
 
 void Oscillator::StopNote(int noteNum, int channel)
 {
-  stats.RemoveFromStats(noteNum, channel);
+  stats.RemoveNoteFromStats(noteNum, channel);
   channels_[channel].StopNote(noteNum);
 }
 

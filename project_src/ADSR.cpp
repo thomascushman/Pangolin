@@ -6,14 +6,15 @@ void ADSR::Init(long durationInMicro, float velocity)
   state_ = NOTE_ON;
   currentVolume_ = velocity_ = velocity;
   
-  attackDuration_ = 1000; //short, static attack duration
-  attackScaling_ = 1.00001f;
-  decayDuration_ = durationInMicro / 16 * 3; //variable decay duration (relatively small)
-  decayScaling_ = 0.995f;
+  attackDuration_ = 7000; //short, static attack duration
+  attackScaling_ = 1.01f;
+  decayDuration_ = 9000; //variable decay duration (relatively small)
+  decayScaling_ = 0.99f;
+  releaseDuration_ = durationInMicro / 16; //1/4th of note is release time
+  releaseScaling_ = 0.9f;
+  
   sustainDuration_ = durationInMicro - attackDuration_ - decayDuration_ - releaseDuration_; //everything besides ADR is left for sustain
   sustainScaling_ = 1.0f;
-  releaseDuration_ = durationInMicro / 4; //1/4th of note is release time
-  releaseScaling_ = 0.99f;
 }
 
 float ADSR::GetEnvelope()
