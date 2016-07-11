@@ -79,7 +79,7 @@ void Debug::Stats::SetFilename(const char* name)
 
 void Debug::Stats::Print_Stats()
 {
-  //print tempo
+  //print filename
   mvprintw(3, 11, "Filename: ");
   attron(COLOR_PAIR(MAGENTA_BLACK));
   mvprintw(3, 23, "%s", filename_);

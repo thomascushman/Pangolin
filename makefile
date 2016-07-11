@@ -11,49 +11,51 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 
 SDIR=./project_src/
 HDIR=./project_inc/
-OUTDIR=./clang/
 ERASE=rm
 OBJECTS=$(OUTDIR)main.o \
-				$(OUTDIR)oscillator.o \
-				$(OUTDIR)note.o \
-				$(OUTDIR)midiparser.o \
-				$(OUTDIR)timer.o \
-				$(OUTDIR)channel.o \
-				$(OUTDIR)debug.o \
-				$(OUTDIR)adsr.o
+				oscillator.o \
+				note.o \
+				midiparser.o \
+				timer.o \
+				channel.o \
+				debug.o \
+				adsr.o
 EXE=Pangolin.exe
 
 # Targets ========================================
 
 $(EXE) : $(OBJECTS)
-	$(CC) $(OBJECTS) $(LIBS) -o $(EXE)
+	$(CC) $(OBJECTS) $(LIBS) -o $(EXE) && make clean_objs
 
-$(OUTDIR)main.o : $(SDIR)main.cpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)main.cpp -o $(OUTDIR)main.o
+main.o : $(SDIR)main.cpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)main.cpp -o main.o
 	
-$(OUTDIR)oscillator.o : $(SDIR)Oscillator.cpp $(HDIR)Oscillator.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Oscillator.cpp -o $(OUTDIR)oscillator.o
+oscillator.o : $(SDIR)Oscillator.cpp $(HDIR)Oscillator.hpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Oscillator.cpp -o oscillator.o
 	
-$(OUTDIR)note.o : $(SDIR)Note.cpp $(HDIR)Note.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Note.cpp -o $(OUTDIR)note.o
+note.o : $(SDIR)Note.cpp $(HDIR)Note.hpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Note.cpp -o note.o
 	
-$(OUTDIR)midiparser.o : $(SDIR)MidiParser.cpp $(HDIR)MidiParser.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)MidiParser.cpp -o $(OUTDIR)midiparser.o
+midiparser.o : $(SDIR)MidiParser.cpp $(HDIR)MidiParser.hpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)MidiParser.cpp -o midiparser.o
 	
-$(OUTDIR)timer.o : $(SDIR)Timer.cpp $(HDIR)Timer.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Timer.cpp -o $(OUTDIR)timer.o
+timer.o : $(SDIR)Timer.cpp $(HDIR)Timer.hpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Timer.cpp -o timer.o
 	
-$(OUTDIR)channel.o : $(SDIR)Channel.cpp $(HDIR)Channel.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Channel.cpp -o $(OUTDIR)channel.o
+channel.o : $(SDIR)Channel.cpp $(HDIR)Channel.hpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Channel.cpp -o channel.o
 	
-$(OUTDIR)debug.o : $(SDIR)Debug.cpp $(HDIR)Debug.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Debug.cpp -o $(OUTDIR)debug.o
+debug.o : $(SDIR)Debug.cpp $(HDIR)Debug.hpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)Debug.cpp -o debug.o
 	
-$(OUTDIR)adsr.o : $(SDIR)ADSR.cpp $(HDIR)ADSR.hpp
-	$(CC) $(CFLAGS) $(INC) -c $(SDIR)ADSR.cpp -o $(OUTDIR)adsr.o
+adsr.o : $(SDIR)ADSR.cpp $(HDIR)ADSR.hpp
+	$(CC) $(CFLAGS) $(INC) -c $(SDIR)ADSR.cpp -o adsr.o
 	
 clean :
 	$(ERASE) $(EXE) $(OBJECTS)
+
+clean_objs :
+	$(ERASE) $(OBJECTS)
 	
 rebuild :
 	make -B
