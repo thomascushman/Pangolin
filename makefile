@@ -3,7 +3,7 @@
 
 # Macros ========================================
 
-CC=clang++
+#CC=clang++
 CFLAGS=-std=c++11 -O2 -g -Wconversion -Wall -Wextra -Wconversion -Werror -pedantic-errors
 
 INC=-Iinc -Iproject_inc
@@ -12,14 +12,14 @@ LIBS=-lncurses -Llib -lmidifile -lportaudio -lrt -lm -lasound -ljack -pthread
 SDIR=./project_src/
 HDIR=./project_inc/
 ERASE=rm
-OBJECTS=$(OUTDIR)main.o \
-				oscillator.o \
-				note.o \
-				midiparser.o \
-				timer.o \
-				channel.o \
-				debug.o \
-				adsr.o
+OBJECTS=main.o \
+	oscillator.o \
+	note.o \
+	midiparser.o \
+	timer.o \
+	channel.o \
+	debug.o \
+	adsr.o
 EXE=Pangolin.exe
 
 # Targets ========================================
@@ -59,3 +59,6 @@ clean_objs :
 	
 rebuild :
 	make -B
+
+debug :
+	CC=clang++ make $(EXE) && CC=g++ make $(EXE)

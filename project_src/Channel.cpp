@@ -18,7 +18,7 @@ void Channel::SetWaveform(float *waveform)
 
 void Channel::SetVolume(int volume)
 {
-  volume_ = (volume / 64.0f);
+  volume_ = (static_cast<float>(volume) / 64.0f);
 }
 
 void Channel::PlayNote(int noteNum, int velocity, long durationInMicro)

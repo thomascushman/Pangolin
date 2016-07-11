@@ -20,9 +20,9 @@ void Note::Init(float *waveform)
 
 void Note::Play(int noteNum, int velocity, long durationInMicro)
 {
-  currentVolume_ = velocity_ = velocity;
+  currentVolume_ = velocity_ = static_cast<float>(velocity);
   noteNum_ = noteNum;
-  samplingIncrement_ = powf(2, (noteNum_ - 21) / 12.0f);
+  samplingIncrement_ = powf(2, (static_cast<float>(noteNum_) - 21.0f) / 12.0f);
   active_ = true;
   adsr_.Init(durationInMicro, velocity_);
 }
