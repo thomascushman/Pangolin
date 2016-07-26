@@ -24,12 +24,9 @@ int main(int argc, char* argv[])
       if(parser.OpenFile(argv[i]))
       {
         parser.Play();
-        while(true)
+        while(parser.Update(osc))
         {
-          if(!parser.Update(osc))
-          {
-            break;
-          }
+          
         }
       }
       else
