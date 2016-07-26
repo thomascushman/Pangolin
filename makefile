@@ -7,7 +7,7 @@
 CFLAGS=-std=c++11 -O2 -g -Wconversion -Wall -Wextra -Wconversion -Werror -pedantic-errors
 
 INC=-Iinc -Iproject_inc
-LIBS=-Llib -lncurses -lmidifile -lportaudio -lrt -lm -lasound -ljack -lpthread -L/usr/lib64 -lstdc++
+LIBS=-Llib -lncurses -lmidifile -lportaudio -lrt -lm -lasound -ljack -lpthread -L/usr/lib64 -lstdc++ 
 
 SDIR=./project_src/
 HDIR=./project_inc/
