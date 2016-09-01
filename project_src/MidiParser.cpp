@@ -7,7 +7,7 @@
 MidiParser::MidiParser()
   : hasFile_(false)
 {
-  //midiFile_ = new MidiFile();
+  //this constructor intentionally left blank
 }
 
 MidiParser::~MidiParser()

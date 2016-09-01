@@ -1,6 +1,8 @@
 #include "Channel.hpp"
 #include "Debug.hpp"
 
+#define FULL_STOP_CODE -1
+
 Channel::Channel()
   : volume_(1.0f), active_(false)
 {
@@ -53,7 +55,7 @@ void Channel::StopNote(int noteNum)
 {
   for(int i = 0; i < NUM_SLOTS; ++i)
   {
-    if(slots_[i].IsPlaying() && slots_[i].IsNote(noteNum))
+    if((noteNum == FULL_STOP_CODE)||(slots_[i].IsPlaying() && slots_[i].IsNote(noteNum)))
     {
       slots_[i].Stop();
       break;

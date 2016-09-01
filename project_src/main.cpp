@@ -3,8 +3,11 @@
 #include "Timer.hpp"
 #include "Debug.hpp"
 
+//controls the timing of notes and reading of midifile
 MidiParser parser;
+//generates/sends sound samples to processor
 Oscillator osc;
+//makes the note statistics all purdy
 Debug::Stats stats;
 
 int main(int argc, char* argv[])

@@ -1,20 +1,31 @@
 #include "ADSR.hpp"
 #include "Debug.hpp"
+#include <ncurses.h>
 
 void ADSR::Init(long durationInMicro, float velocity)
 {
   state_ = NOTE_ON;
   currentVolume_ = velocity_ = velocity;
   
-  attackDuration_ = 7000; //short, static attack duration
-  attackScaling_ = 1.01f;
-  decayDuration_ = 9000; //variable decay duration (relatively small)
-  decayScaling_ = 0.99f;
-  releaseDuration_ = durationInMicro / 16; //1/4th of note is release time
-  releaseScaling_ = 0.9f;
+  //* = these are the values chosen to sound good on all test songs
+  //** = update duration
   
-  sustainDuration_ = durationInMicro - attackDuration_ - decayDuration_ - releaseDuration_; //everything besides ADR is left for sustain
-  sustainScaling_ = 1.0f;
+  attackDuration_ = 20000; //short, static attack duration
+  attackScaling_ = 1.05f;   //*
+  durationInMicro -= attackDuration_; //**
+  
+  decayDuration_ = 20000;  //variable decay duration (relatively small)
+  decayScaling_ = 0.93f;   //*
+  
+  durationInMicro -= attackDuration_; //**
+  
+  releaseDuration_ = durationInMicro / 2; //1/4th of note is release time
+  releaseScaling_ = 0.99f; //*
+  
+  durationInMicro -= releaseDuration_; //**
+  
+  sustainDuration_ = durationInMicro; //everything besides ADR is left for sustain
+  sustainScaling_ = 1.0f;  //this is just common sense, really
 }
 
 float ADSR::GetEnvelope()
@@ -28,7 +39,7 @@ float ADSR::GetEnvelope()
       //start attack
       state_ = ATTACK;
       timer_.Start(attackDuration_);
-      //fall through into attack
+      //intentional fall through into attack
     }
     case ATTACK:
     {
@@ -37,6 +48,7 @@ float ADSR::GetEnvelope()
       {
         //increase volume
         currentVolume_ *= attackScaling_;
+        //but not too much
         if(currentVolume_ > velocity_ * 2.0f)
         {
           currentVolume_ = velocity_ * 2.0f;
@@ -57,6 +69,7 @@ float ADSR::GetEnvelope()
       {
         //decrease volume
         currentVolume_ *= decayScaling_;
+        //but not too much
         if(currentVolume_ < velocity_ * 0.5f)
         {
           currentVolume_ = velocity_ * 0.5f;

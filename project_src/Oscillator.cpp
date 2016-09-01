@@ -4,6 +4,8 @@
 #include <ctime>
 #include <cstdlib>
 
+#define FULL_STOP_CODE -1
+
 // PUBLIC METHODS
 
 static float* waves[NUM_WAVES];
@@ -58,7 +60,11 @@ void Oscillator::SetVolume(int volume, int channel)
 
 void Oscillator::StopAll()
 {
-
+  for(int i = 0; i < NUM_CHANNELS; ++i)
+  {
+    stats.RemoveNoteFromStats(FULL_STOP_CODE, i);
+    channels_[i].StopNote(FULL_STOP_CODE);
+  }
 }
 
 void Oscillator::ChangeWaveform(WAVEFORM wave)
@@ -66,8 +72,10 @@ void Oscillator::ChangeWaveform(WAVEFORM wave)
   waveform_ = waves[wave];
   for(int i = 0; i < NUM_CHANNELS; ++i)
   {
+    //if it's drums you're after
     if(i == 9)
     {
+      //ignore it (for now)
       channels_[i].SetWaveform(nullptr);
     }
     else 
